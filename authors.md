@@ -13,12 +13,12 @@ Source:
 Lyu W (2026). *infoxtr: Information-Theoretic Measures for Revealing
 Variable Interactions*.
 [doi:10.32614/CRAN.package.infoxtr](https://doi.org/10.32614/CRAN.package.infoxtr),
-R package version 0.1.
+R package version 0.2.
 
     @Manual{,
       title = {{infoxtr: Information-Theoretic Measures for Revealing Variable Interactions}},
       author = {Wenbo Lyu},
       year = {2026},
-      note = {R package version 0.1},
+      note = {R package version 0.2},
       doi = {10.32614/CRAN.package.infoxtr},
     }

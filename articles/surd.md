@@ -197,8 +197,8 @@ pollutants and cardiovascular diseases.
 
 ``` r
 popd_nb = spdep::read.gal(system.file("case/popd_nb.gal",package = "spEDM"))
-## Warning in spdep::read.gal(system.file("case/popd_nb.gal", package = "spEDM")): neighbour object
-## has 4 sub-graphs
+## Warning in spdep::read.gal(system.file("case/popd_nb.gal", package = "spEDM")): neighbour
+## object has 4 sub-graphs
 popd = readr::read_csv(system.file("case/popd.csv",package = "spEDM"))
 popd_sf = sf::st_as_sf(popd, coords = c("lon","lat"), crs = 4326)
 popd_sf

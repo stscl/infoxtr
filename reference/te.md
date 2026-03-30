@@ -68,6 +68,11 @@ te(
 
 A numerical value.
 
+## References
+
+Schreiber, T., 2000. Measuring Information Transfer. Physical Review
+Letters 85, 461–464.
+
 ## Examples
 
 ``` r
