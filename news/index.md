@@ -1,6 +1,10 @@
 # Changelog
 
+## infoxtr 0.3
+
 ## infoxtr 0.2
+
+CRAN release: 2026-03-30
 
 #### enhancements
 
