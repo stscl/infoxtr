@@ -28,6 +28,7 @@ produces a SURD decomposition plot — a grouped bar chart of **unique
 a side panel showing the **information leak**.
 
 ``` r
+
 utils_plot_surd = \(surd_list,threshold = 0,style = "shallow") {
   df = surd_list |> 
     tibble::as_tibble() |> 
@@ -94,6 +95,7 @@ To generate the visualization, please ensure the required packages are
 installed by running the following code:
 
 ``` r
+
 if (!requireNamespace("dplyr")) install.packages("dplyr")
 if (!requireNamespace("tibble")) install.packages("tibble")
 if (!requireNamespace("stringr")) install.packages("stringr")
@@ -110,6 +112,7 @@ causal analyses.
 ### Air Pollution and Cardiovascular Health in Hong Kong
 
 ``` r
+
 cvd = readr::read_csv(system.file("case/cvd.csv",package = "tEDM"))
 head(cvd)
 ## # A tibble: 6 × 5
@@ -124,6 +127,7 @@ head(cvd)
 ```
 
 ``` r
+
 cvd_long = cvd |>
   tibble::rowid_to_column("id") |>
   tidyr::pivot_longer(cols = -id,
@@ -152,6 +156,7 @@ of cardiovascular diseases, we performed SURD analysis using a time lag
 step `3` and `10` discretization bins.
 
 ``` r
+
 res_cvds = infoxtr::surd(cvd, 1, 2:5,
                          lag = 15, bin = 10, threads = 6)
 tibble::as_tibble(res_cvds)
@@ -183,6 +188,7 @@ tibble::as_tibble(res_cvds)
 The SURD results are shown in the figure below:
 
 ``` r
+
 utils_plot_surd(res_cvds)
 ```
 
@@ -196,6 +202,7 @@ pollutants and cardiovascular diseases.
 ### Population Density and Its Drivers in Mainland China
 
 ``` r
+
 popd_nb = spdep::read.gal(system.file("case/popd_nb.gal",package = "spEDM"))
 ## Warning in spdep::read.gal(system.file("case/popd_nb.gal", package = "spEDM")): neighbour
 ## object has 4 sub-graphs
@@ -224,6 +231,7 @@ popd_sf
 ```
 
 ``` r
+
 res_popd = infoxtr::surd(popd_sf, 1, 2:5,
                          lag = 3, bin = 10, nb = popd_nb, threads = 6)
 tibble::as_tibble(res_popd)
@@ -252,6 +260,7 @@ tibble::as_tibble(res_popd)
 ```
 
 ``` r
+
 utils_plot_surd(res_popd)
 ```
 
@@ -264,6 +273,7 @@ its Drivers.
 ### Influence of Climatic and Topographic Factors on Net Primary Productivity (NPP) in Mainland China
 
 ``` r
+
 npp = terra::rast(system.file("case/npp.tif", package = "spEDM"))
 npp
 ## class       : SpatRaster 
@@ -278,6 +288,7 @@ npp
 ```
 
 ``` r
+
 res_npp = infoxtr::surd(npp,1, 2:5,
                         lag = 2, bin = 10, threads = 6)
 tibble::as_tibble(res_npp)
@@ -298,6 +309,7 @@ tibble::as_tibble(res_npp)
 ```
 
 ``` r
+
 utils_plot_surd(res_npp)
 ```
 

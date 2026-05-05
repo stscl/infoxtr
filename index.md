@@ -20,6 +20,7 @@ its headers for direct integration into other R packages.
 - Install from [CRAN](https://CRAN.R-project.org/package=infoxtr) with:
 
 ``` r
+
 install.packages("infoxtr", dep = TRUE)
 ```
 
@@ -27,6 +28,7 @@ install.packages("infoxtr", dep = TRUE)
   [R-universe](https://stscl.r-universe.dev/infoxtr) with:
 
 ``` r
+
 install.packages("infoxtr",
                  repos = c("https://stscl.r-universe.dev",
                            "https://cloud.r-project.org"),
@@ -37,6 +39,7 @@ install.packages("infoxtr",
   with:
 
 ``` r
+
 if (!requireNamespace("devtools")) {
     install.packages("devtools")
 }

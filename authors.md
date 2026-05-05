@@ -12,7 +12,7 @@ Source:
 
 Lyu W (2026). *infoxtr: Information-Theoretic Measures for Revealing
 Variable Interactions*.
-[doi:10.32614/CRAN.package.infoxtr](https://doi.org/10.32614/CRAN.package.infoxtr),
+[doi:10.32614/CRAN.package.infoxtr](https://doi.org/10.32614/CRAN.package.infoxtr).
 R package version 0.2.
 
     @Manual{,
