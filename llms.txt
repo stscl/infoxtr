@@ -40,7 +40,7 @@ install.packages("infoxtr",
 
 ``` r
 
-if (!requireNamespace("devtools")) {
+if (!requireNamespace("devtools", quietly = TRUE)) {
     install.packages("devtools")
 }
 devtools::install_github("stscl/infoxtr",
@@ -68,6 +68,8 @@ knockoff operation. Science Advances 11.
 Varley, T.F., 2025. Information theory for complex systems scientists:
 What, why, and how. Physics Reports 1148, 1–55.
 <https://doi.org/10.1016/j.physrep.2025.09.007>.
+
+ 
 
 # Package index
 
