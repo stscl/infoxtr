@@ -21,7 +21,7 @@ its headers for direct integration into other R packages.
 
 ``` r
 
-install.packages("infoxtr", dep = TRUE)
+install.packages("infoxtr", dependencies = TRUE)
 ```
 
 - Install binary version from
@@ -32,7 +32,7 @@ install.packages("infoxtr", dep = TRUE)
 install.packages("infoxtr",
                  repos = c("https://stscl.r-universe.dev",
                            "https://cloud.r-project.org"),
-                 dep = TRUE)
+                 dependencies = TRUE)
 ```
 
 - Install from source code on [GitHub](https://github.com/stscl/infoxtr)
@@ -40,12 +40,10 @@ install.packages("infoxtr",
 
 ``` r
 
-if (!requireNamespace("devtools", quietly = TRUE)) {
-    install.packages("devtools")
+if (!requireNamespace("pak", quietly = TRUE)) {
+    install.packages("pak")
 }
-devtools::install_github("stscl/infoxtr",
-                         build_vignettes = TRUE,
-                         dep = TRUE)
+pak::pak("stscl/infoxtr", dependencies = TRUE)
 ```
 
 ## References
