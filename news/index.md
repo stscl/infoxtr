@@ -2,6 +2,11 @@
 
 ## infoxtr 0.3
 
+#### breaking changes
+
+- Remove leading lag-induced NA values in `surd` time-series
+  implementation ([\#83](https://github.com/stscl/infoxtr/issues/83)).
+
 ## infoxtr 0.2
 
 CRAN release: 2026-03-30
