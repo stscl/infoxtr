@@ -73,7 +73,7 @@
             
             <h4 data-toc-skip class="date"><div class="line-block">Last
 update: 2026-05-05<br>
-Last run: 2026-05-05</div></h4>
+Last run: 2026-05-26</div></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/stscl/infoxtr/blob/main/vignettes/surd.Rmd" class="external-link"><code>vignettes/surd.Rmd</code></a></small>
       <div class="d-none name"><code>surd.Rmd</code></div>
@@ -239,26 +239,26 @@ bins.</p>
 <span><span class="co">## # A tibble: 20 × 3</span></span>
 <span><span class="co">##    vars        types      values</span></span>
 <span><span class="co">##    &lt;chr&gt;       &lt;chr&gt;       &lt;dbl&gt;</span></span>
-<span><span class="co">##  1 V1          U        0.00219 </span></span>
-<span><span class="co">##  2 V2          U        0.0155  </span></span>
-<span><span class="co">##  3 V3          U        0.00252 </span></span>
-<span><span class="co">##  4 V1_V2       R        0.00345 </span></span>
-<span><span class="co">##  5 V1_V4       R        0.000711</span></span>
-<span><span class="co">##  6 V1_V2_V3    R        0.00506 </span></span>
-<span><span class="co">##  7 V1_V2_V4    R        0.00991 </span></span>
-<span><span class="co">##  8 V1_V2_V3_V4 R        0.0269  </span></span>
-<span><span class="co">##  9 V1_V2       S        0.0205  </span></span>
-<span><span class="co">## 10 V1_V3       S        0.0224  </span></span>
-<span><span class="co">## 11 V1_V4       S        0.0451  </span></span>
-<span><span class="co">## 12 V2_V3       S        0.0256  </span></span>
-<span><span class="co">## 13 V2_V4       S        0.0352  </span></span>
-<span><span class="co">## 14 V3_V4       S        0.0366  </span></span>
-<span><span class="co">## 15 V1_V2_V3    S        0.0350  </span></span>
-<span><span class="co">## 16 V1_V2_V4    S        0.104   </span></span>
+<span><span class="co">##  1 V1          U        0.00220 </span></span>
+<span><span class="co">##  2 V2          U        0.0156  </span></span>
+<span><span class="co">##  3 V3          U        0.00253 </span></span>
+<span><span class="co">##  4 V1_V2       R        0.00347 </span></span>
+<span><span class="co">##  5 V1_V4       R        0.000714</span></span>
+<span><span class="co">##  6 V1_V2_V3    R        0.00508 </span></span>
+<span><span class="co">##  7 V1_V2_V4    R        0.00995 </span></span>
+<span><span class="co">##  8 V1_V2_V3_V4 R        0.0232  </span></span>
+<span><span class="co">##  9 V1_V2       S        0.0206  </span></span>
+<span><span class="co">## 10 V1_V3       S        0.0225  </span></span>
+<span><span class="co">## 11 V1_V4       S        0.0453  </span></span>
+<span><span class="co">## 12 V2_V3       S        0.0257  </span></span>
+<span><span class="co">## 13 V2_V4       S        0.0353  </span></span>
+<span><span class="co">## 14 V3_V4       S        0.0367  </span></span>
+<span><span class="co">## 15 V1_V2_V3    S        0.0352  </span></span>
+<span><span class="co">## 16 V1_V2_V4    S        0.105   </span></span>
 <span><span class="co">## 17 V1_V3_V4    S        0.151   </span></span>
-<span><span class="co">## 18 V2_V3_V4    S        0.0467  </span></span>
-<span><span class="co">## 19 V1_V2_V3_V4 S        0.404   </span></span>
-<span><span class="co">## 20 InfoLeak    InfoLeak 0.535</span></span></code></pre></div>
+<span><span class="co">## 18 V2_V3_V4    S        0.0468  </span></span>
+<span><span class="co">## 19 V1_V2_V3_V4 S        0.406   </span></span>
+<span><span class="co">## 20 InfoLeak    InfoLeak 0.530</span></span></code></pre></div>
 <p>The SURD results are shown in the figure below:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">utils_plot_surd</span><span class="op">(</span><span class="va">res_cvds</span><span class="op">)</span></span></code></pre></div>
@@ -274,8 +274,8 @@ diseases.</div>
 </h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">popd_nb</span> <span class="op">=</span> <span class="fu">spdep</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/read.gal.html" class="external-link">read.gal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"case/popd_nb.gal"</span>,package <span class="op">=</span> <span class="st">"spEDM"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## Warning in spdep::read.gal(system.file("case/popd_nb.gal", package = "spEDM")): neighbour object has 4</span></span>
-<span><span class="co">## sub-graphs</span></span>
+<span><span class="co">## Warning in spdep::read.gal(system.file("case/popd_nb.gal", package =</span></span>
+<span><span class="co">## "spEDM")): neighbour object has 4 sub-graphs</span></span>
 <span><span class="va">popd</span> <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"case/popd.csv"</span>,package <span class="op">=</span> <span class="st">"spEDM"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">popd_sf</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">popd</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lon"</span>,<span class="st">"lat"</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
 <span><span class="va">popd_sf</span></span>
@@ -339,15 +339,15 @@ Productivity (NPP) in Mainland China<a class="anchor" aria-label="anchor" href="
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">npp</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"case/npp.tif"</span>, package <span class="op">=</span> <span class="st">"spEDM"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">npp</span></span>
-<span><span class="co">## class       : SpatRaster </span></span>
+<span><span class="co">## class       : SpatRaster</span></span>
 <span><span class="co">## size        : 404, 483, 5  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">## resolution  : 10000, 10000  (x, y)</span></span>
 <span><span class="co">## extent      : -2625763, 2204237, 1877078, 5917078  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">## coord. ref. : CGCS2000_Albers </span></span>
-<span><span class="co">## source      : npp.tif </span></span>
-<span><span class="co">## names       :      npp,        pre,      tem,      elev,         hfp </span></span>
-<span><span class="co">## min values  :   164.00,   384.3409, -47.8194, -122.2004,  0.03390418 </span></span>
-<span><span class="co">## max values  : 16606.33, 23878.3555, 263.6938, 5350.4902, 44.90312195</span></span></code></pre></div>
+<span><span class="co">## coord. ref. : CGCS2000_Albers</span></span>
+<span><span class="co">## source      : npp.tif</span></span>
+<span><span class="co">## names       :          npp,          pre,        tem,        elev,       hfp</span></span>
+<span><span class="co">## min values  :          164,   384.340942, -47.819405, -122.200386,  0.033904</span></span>
+<span><span class="co">## max values  : 16606.333984, 23878.355469, 263.693787, 5350.490234, 44.903122</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res_npp</span> <span class="op">=</span> <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/surd.html">surd</a></span><span class="op">(</span><span class="va">npp</span>,<span class="fl">1</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">5</span>,</span>
 <span>                        lag <span class="op">=</span> <span class="fl">2</span>, bin <span class="op">=</span> <span class="fl">10</span>, threads <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>

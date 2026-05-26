@@ -163,26 +163,26 @@ tibble::as_tibble(res_cvds)
 ## # A tibble: 20 × 3
 ##    vars        types      values
 ##    <chr>       <chr>       <dbl>
-##  1 V1          U        0.00219 
-##  2 V2          U        0.0155  
-##  3 V3          U        0.00252 
-##  4 V1_V2       R        0.00345 
-##  5 V1_V4       R        0.000711
-##  6 V1_V2_V3    R        0.00506 
-##  7 V1_V2_V4    R        0.00991 
-##  8 V1_V2_V3_V4 R        0.0269  
-##  9 V1_V2       S        0.0205  
-## 10 V1_V3       S        0.0224  
-## 11 V1_V4       S        0.0451  
-## 12 V2_V3       S        0.0256  
-## 13 V2_V4       S        0.0352  
-## 14 V3_V4       S        0.0366  
-## 15 V1_V2_V3    S        0.0350  
-## 16 V1_V2_V4    S        0.104   
+##  1 V1          U        0.00220 
+##  2 V2          U        0.0156  
+##  3 V3          U        0.00253 
+##  4 V1_V2       R        0.00347 
+##  5 V1_V4       R        0.000714
+##  6 V1_V2_V3    R        0.00508 
+##  7 V1_V2_V4    R        0.00995 
+##  8 V1_V2_V3_V4 R        0.0232  
+##  9 V1_V2       S        0.0206  
+## 10 V1_V3       S        0.0225  
+## 11 V1_V4       S        0.0453  
+## 12 V2_V3       S        0.0257  
+## 13 V2_V4       S        0.0353  
+## 14 V3_V4       S        0.0367  
+## 15 V1_V2_V3    S        0.0352  
+## 16 V1_V2_V4    S        0.105   
 ## 17 V1_V3_V4    S        0.151   
-## 18 V2_V3_V4    S        0.0467  
-## 19 V1_V2_V3_V4 S        0.404   
-## 20 InfoLeak    InfoLeak 0.535
+## 18 V2_V3_V4    S        0.0468  
+## 19 V1_V2_V3_V4 S        0.406   
+## 20 InfoLeak    InfoLeak 0.530
 ```
 
 The SURD results are shown in the figure below:
@@ -204,8 +204,8 @@ pollutants and cardiovascular diseases.
 ``` r
 
 popd_nb = spdep::read.gal(system.file("case/popd_nb.gal",package = "spEDM"))
-## Warning in spdep::read.gal(system.file("case/popd_nb.gal", package = "spEDM")): neighbour object has 4
-## sub-graphs
+## Warning in spdep::read.gal(system.file("case/popd_nb.gal", package =
+## "spEDM")): neighbour object has 4 sub-graphs
 popd = readr::read_csv(system.file("case/popd.csv",package = "spEDM"))
 popd_sf = sf::st_as_sf(popd, coords = c("lon","lat"), crs = 4326)
 popd_sf
@@ -276,15 +276,15 @@ its Drivers.
 
 npp = terra::rast(system.file("case/npp.tif", package = "spEDM"))
 npp
-## class       : SpatRaster 
+## class       : SpatRaster
 ## size        : 404, 483, 5  (nrow, ncol, nlyr)
 ## resolution  : 10000, 10000  (x, y)
 ## extent      : -2625763, 2204237, 1877078, 5917078  (xmin, xmax, ymin, ymax)
-## coord. ref. : CGCS2000_Albers 
-## source      : npp.tif 
-## names       :      npp,        pre,      tem,      elev,         hfp 
-## min values  :   164.00,   384.3409, -47.8194, -122.2004,  0.03390418 
-## max values  : 16606.33, 23878.3555, 263.6938, 5350.4902, 44.90312195
+## coord. ref. : CGCS2000_Albers
+## source      : npp.tif
+## names       :          npp,          pre,        tem,        elev,       hfp
+## min values  :          164,   384.340942, -47.819405, -122.200386,  0.033904
+## max values  : 16606.333984, 23878.355469, 263.693787, 5350.490234, 44.903122
 ```
 
 ``` r
