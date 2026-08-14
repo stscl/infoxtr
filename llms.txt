@@ -94,6 +94,8 @@ What, why, and how. Physics Reports 1148, 1–55.
   [`surd(`*`<sf>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
   [`surd(`*`<SpatRaster>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
   : SURD
+- [`infoimbalance()`](https://stscl.github.io/infoxtr/reference/infoimbalance.md)
+  : Information Imbalance
 
 ## Knockoff-based interaction testing
 
