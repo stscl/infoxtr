@@ -8,7 +8,7 @@
   knitr::knit(inp,out)
 }
 
-vignettes = c("surd")
+vignettes = c("main1_iig", "main2_surd")
 for (v in vignettes) {
   .prebuild_vignettes(v)
 }
