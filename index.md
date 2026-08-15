@@ -55,6 +55,15 @@ Kraskov, A., Stogbauer, H., Grassberger, P., 2004. Estimating mutual
 information. Physical Review E 69.
 <https://doi.org/10.1103/physreve.69.066138>.
 
+Glielmo, A., Zeni, C., Cheng, B., Csanyi, G., Laio, A., 2022. Ranking
+the information content of distance measures. PNAS Nexus 1.
+<https://doi.org/10.1093/pnasnexus/pgac039>.
+
+Del Tatto, V., Fortunato, G., Bueti, D., Laio, A., 2024. Robust
+inference of causality in high-dimensional dynamical processes from the
+Information Imbalance of distance ranks. Proceedings of the National
+Academy of Sciences 121. <https://doi.org/10.1073/pnas.2317256121>.
+
 Martinez-Sanchez, A., Arranz, G., Lozano-Duran, A., 2024. Decomposing
 causality into its synergistic, unique, and redundant components. Nature
 Communications 15. <https://doi.org/10.1038/s41467-024-53373-4>.
