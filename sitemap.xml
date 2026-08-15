@@ -1,6 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://stscl.github.io/infoxtr/404.html</loc></url>
 <url><loc>https://stscl.github.io/infoxtr/articles/index.html</loc></url>
+<url><loc>https://stscl.github.io/infoxtr/articles/main1_imbalance.html</loc></url>
 <url><loc>https://stscl.github.io/infoxtr/articles/main2_surd.html</loc></url>
 <url><loc>https://stscl.github.io/infoxtr/authors.html</loc></url>
 <url><loc>https://stscl.github.io/infoxtr/build-vignettes.html</loc></url>
@@ -12,6 +13,7 @@
 <url><loc>https://stscl.github.io/infoxtr/reference/entropy.html</loc></url>
 <url><loc>https://stscl.github.io/infoxtr/reference/imbalance_gain.html</loc></url>
 <url><loc>https://stscl.github.io/infoxtr/reference/index.html</loc></url>
+<url><loc>https://stscl.github.io/infoxtr/reference/info_imbalance.html</loc></url>
 <url><loc>https://stscl.github.io/infoxtr/reference/je.html</loc></url>
 <url><loc>https://stscl.github.io/infoxtr/reference/kocmi.html</loc></url>
 <url><loc>https://stscl.github.io/infoxtr/reference/mi.html</loc></url>

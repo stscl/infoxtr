@@ -14,6 +14,8 @@
   Information
 - [`cmi()`](https://stscl.github.io/infoxtr/reference/cmi.md) :
   Conditional Mutual Information
+- [`info_imbalance()`](https://stscl.github.io/infoxtr/reference/info_imbalance.md)
+  : Information Imbalance
 
 ### Information flow
 

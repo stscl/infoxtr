@@ -4,8 +4,8 @@
 
 #### new
 
-- Enact `infoimbalance` R API support for infomation imbalance gain
-  method ([\#87](https://github.com/stscl/infoxtr/issues/87)).
+- Provide R-level API and vignette for infomation imbalance and
+  imbalance gain ([\#91](https://github.com/stscl/infoxtr/issues/91)).
 
 #### breaking changes
 
