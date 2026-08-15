@@ -19,8 +19,8 @@
 
 - [`te()`](https://stscl.github.io/infoxtr/reference/te.md) : Transfer
   Entropy
-- [`infoimbalance()`](https://stscl.github.io/infoxtr/reference/infoimbalance.md)
-  : Information Imbalance
+- [`imbalance_gain()`](https://stscl.github.io/infoxtr/reference/imbalance_gain.md)
+  : Information Imbalance Gain
 - [`surd(`*`<data.frame>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
   [`surd(`*`<sf>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
   [`surd(`*`<SpatRaster>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
