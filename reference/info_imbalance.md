@@ -10,7 +10,7 @@ info_imbalance(
   my,
   lib = NULL,
   pred = NULL,
-  k = 3,
+  k = 1,
   threads = 1,
   method = "euclidean"
 )
@@ -63,5 +63,5 @@ set.seed(42)
 mx = embed(rnorm(100), 3)
 my = embed(rnorm(100), 3)
 infoxtr::info_imbalance(mx, my)
-#> [1] 1.033667
+#> [1] 1.008538
 ```
