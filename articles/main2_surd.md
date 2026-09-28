@@ -1,4 +1,4 @@
-# Synergistic-Unique-Redundant Decomposition of Causality (SURD)
+# Synergistic-Unique-Redundant Decomposition of Causality
 
 ## Introduction
 
