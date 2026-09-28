@@ -1,4 +1,4 @@
-# SURD
+# Synergistic-Unique-Redundant Decomposition
 
 Synergistic-Unique-Redundant Decomposition
 

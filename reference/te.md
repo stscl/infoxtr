@@ -1,6 +1,6 @@
 # Transfer Entropy
 
-Estimate the transfer entropy from agent variables to target variables.
+Transfer Entropy
 
 ## Usage
 

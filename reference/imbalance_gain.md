@@ -1,6 +1,6 @@
-# Information Imbalance Gain
+# Imbalance Gain
 
-Information Imbalance Gain
+Imbalance Gain
 
 ## Usage
 

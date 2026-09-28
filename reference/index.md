@@ -22,16 +22,16 @@
 - [`te()`](https://stscl.github.io/infoxtr/reference/te.md) : Transfer
   Entropy
 - [`imbalance_gain()`](https://stscl.github.io/infoxtr/reference/imbalance_gain.md)
-  : Information Imbalance Gain
+  : Imbalance Gain
 - [`surd(`*`<data.frame>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
   [`surd(`*`<sf>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
   [`surd(`*`<SpatRaster>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
-  : SURD
+  : Synergistic-Unique-Redundant Decomposition
 
 ## Knockoff-based interaction testing
 
 - [`kocmi()`](https://stscl.github.io/infoxtr/reference/kocmi.md) :
-  KOCMI
+  Knockoff Conditional Mutual Information
 
 ## Miscellaneous Utility Functions
 

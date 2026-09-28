@@ -1,4 +1,4 @@
-# KOCMI
+# Knockoff Conditional Mutual Information
 
 Knockoff Conditional Mutual Information
 

@@ -1,6 +1,6 @@
 # Joint Entropy
 
-Estimate the joint entropy of selected variables.
+Joint Entropy
 
 ## Usage
 

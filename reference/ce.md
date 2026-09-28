@@ -1,7 +1,6 @@
 # Conditional Entropy
 
-Estimate the conditional entropy of target variables given conditioning
-variables.
+Conditional Entropy
 
 ## Usage
 

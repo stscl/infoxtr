@@ -1,7 +1,6 @@
 # Mutual Information
 
-Estimate the mutual information between target and interacting
-variables.
+Mutual Information
 
 ## Usage
 
