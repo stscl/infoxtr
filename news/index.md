@@ -7,6 +7,12 @@
 - Provide R-level API and vignette for infomation imbalance and
   imbalance gain ([\#91](https://github.com/stscl/infoxtr/issues/91)).
 
+#### enhancements
+
+- [`discretize()`](https://stscl.github.io/infoxtr/reference/discretize.md)
+  now safely falls back to factor encoding (`NA` as `0`) for edge cases
+  ([\#98](https://github.com/stscl/infoxtr/issues/98)).
+
 #### breaking changes
 
 - Euclidean/Manhattan distances now automatically compensate for

@@ -1,8 +1,6 @@
 # Discretization
 
-Discretize a numeric vector into categorical classes using several
-commonly used discretization methods. Missing values (`NA`/`NaN`) are
-ignored and returned as class `0`.
+Discretization
 
 ## Usage
 
@@ -74,8 +72,11 @@ A discretized integer vector.
 
 ## Note
 
-If `x` is not numeric, it will be converted to integer categories via
-[`as.factor()`](https://rdrr.io/r/base/factor.html).
+If `x` is not numeric, or if the number of unique non-`NA` values is
+less than or equal to `n` (except for the `"headtail"("headtails")`
+method), the function falls back to integer encoding via
+[`as.factor()`](https://rdrr.io/r/base/factor.html). In all cases,
+missing values (`NA`/`NaN`) are ignored and returned as class `0`.
 
 ## Examples
 
