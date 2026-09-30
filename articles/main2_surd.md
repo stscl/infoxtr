@@ -289,7 +289,7 @@ npp
 
 ``` r
 
-res_npp = infoxtr::surd(npp,1, 2:5,
+res_npp = infoxtr::surd(npp, 1, 2:5,
                         lag = 2, bin = 10, threads = 6)
 tibble::as_tibble(res_npp)
 ## # A tibble: 22 × 3

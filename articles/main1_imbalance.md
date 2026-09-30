@@ -93,3 +93,114 @@ same formulation can be applied in the reverse direction to assess
 \\Y\rightarrow X\mid Z\\.
 
 ## Example Cases
+
+We illustrate the Imbalance Gain using the *Paramecium*–*Didinium*
+abundance data from the convergent cross mapping science paper. The data
+describe the temporal variation in the abundances of *Paramecium* and
+*Didinium*, providing a simple example for evaluating causal association
+between two interacting species.
+
+``` r
+
+abun = readr::read_csv(
+  system.file("case/abundance.csv", package = "pc"
+))[, c("paramecium", "didinium")]
+
+head(abun)
+## # A tibble: 6 × 2
+##   paramecium didinium
+##        <dbl>    <dbl>
+## 1       15.6     5.76
+## 2       53.6     9.05
+## 3       73.3    17.3 
+## 4       93.9    42.0 
+## 5      115.     56.0 
+## 6       76.6    74.9
+```
+
+The *Paramecium*–*Didinium* abundance time series can be visualized as
+follows:
+
+``` r
+
+fig_abun = read.csv((system.file("case/abundance.csv", 
+                                 package = "pc"))) |>
+  tidyr::pivot_longer(cols = -time,
+                      names_to = "species", values_to = "value") |> 
+  dplyr::mutate(species = factor(species, 
+                  levels = c("paramecium", "didinium"),
+                  labels = c("paramecium", "didinium"))) |> 
+  ggplot2::ggplot(ggplot2::aes(x = time, y = value, color = species)) +
+  ggplot2::geom_line(linewidth = 1.05) +
+  ggplot2::scale_x_continuous(breaks = seq(5, 35, 10), limits = c(-0.5, 35.5),
+                              expand = c(0, 0), name = "Time (days)") +
+  ggplot2::scale_y_continuous(breaks = seq(0, 400, 100), limits = c(0, 410),
+                              expand = c(0, 0), name = "Abundance (#/mL)") +
+  ggplot2::scale_color_manual(name = NULL, 
+                              values = c("paramecium" = "#a7b3d9", 
+                                         "didinium" = "#38a247")) +
+  ggplot2::theme_bw(base_family = "serif") +
+  ggplot2::theme(
+        legend.direction = "horizontal",
+        legend.position = "inside",
+        legend.justification = c("center","top"),
+        legend.background = ggplot2::element_rect(fill = "transparent", 
+                                                  color = "transparent"),
+        legend.text = ggplot2::element_text(size = 15),
+        axis.text.x = ggplot2::element_text(size = 15),
+        axis.text.y = ggplot2::element_text(size = 15),
+        axis.title.x = ggplot2::element_text(size = 15),
+        axis.title.y = ggplot2::element_text(size = 15))
+fig_abun
+```
+
+![Figure 1. Time series of Paramecium and Didinium abundances (#/mL)
+from an experiment by Veilleux
+(1979).](../reference/figures/ig/abun_plot-1.png)
+
+**Figure 1**. Time series of Paramecium and Didinium abundances (#/mL)
+from an experiment by Veilleux (1979).
+
+The observed time series are reconstructed using time-delay embedding to
+obtain the shadow manifolds (measurements). The reconstructed
+measurements are then used to evaluate the causality between the two
+interacting species.
+
+``` r
+
+mp = stats::embed(abun$paramecium, 5)
+md = stats::embed(abun$didinium, 5)
+```
+
+The Imbalance Gain is subsequently calculated to quantify the additional
+information provided by one species about the future state of the other.
+The analysis is performed in both directions, \\paramecium \rightarrow
+didinium\\ and \\didinium \rightarrow paramecium\\.
+
+``` r
+
+p_self_imb = purrr::map_dbl(
+    1:50, 
+    \(.h) infoxtr::imbalance_gain(mp, mp, alpha = 0,
+                                  h = .h, threads = 10))
+
+d_self_imb = purrr::map_dbl(
+    1:50, 
+    \(.h) infoxtr::imbalance_gain(md, md, alpha = 0,
+                                  h = .h, threads = 10))
+
+ig_p2d = infoxtr::imbalance_gain(mp, md, alpha = seq(0,1,by = 0.05),
+                                 h = 10, threads = 10)
+
+ig_d2p = infoxtr::imbalance_gain(md, mp, alpha = seq(0,1,by = 0.05),
+                                 h = 10, threads = 10)
+
+cat(sprintf("Imbalance Gain for paramecium -> didinium: %.2f %%\n", 100 * 1 - min(ig_p2d) / ig_p2d[1]))
+## Imbalance Gain for paramecium -> didinium: 99.06 %
+cat(sprintf("Imbalance Gain for didinium -> paramecium: %.2f %%\n", 100 * 1 - min(ig_d2p) / ig_d2p[1]))
+## Imbalance Gain for didinium -> paramecium: 99.00 %
+```
+
+The imbalance gains for \\paramecium \rightarrow didinium\\ and
+\\didinium \rightarrow paramecium\\ are both greater than \\0\\, which
+provides evidence of a bidirectional causal relationship between them.

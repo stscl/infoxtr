@@ -180,6 +180,100 @@ formulation can be applied in the reverse direction to assess <span class="math 
 <div class="section level2">
 <h2 id="example-cases">Example Cases<a class="anchor" aria-label="anchor" href="#example-cases"></a>
 </h2>
+<p>We illustrate the Imbalance Gain using the
+<em>Paramecium</em>–<em>Didinium</em> abundance data from the convergent
+cross mapping science paper. The data describe the temporal variation in
+the abundances of <em>Paramecium</em> and <em>Didinium</em>, providing a
+simple example for evaluating causal association between two interacting
+species.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">abun</span> <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"case/abundance.csv"</span>, package <span class="op">=</span> <span class="st">"pc"</span></span>
+<span><span class="op">)</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"paramecium"</span>, <span class="st">"didinium"</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">abun</span><span class="op">)</span></span>
+<span><span class="co">## # A tibble: 6 × 2</span></span>
+<span><span class="co">##   paramecium didinium</span></span>
+<span><span class="co">##        &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">## 1       15.6     5.76</span></span>
+<span><span class="co">## 2       53.6     9.05</span></span>
+<span><span class="co">## 3       73.3    17.3 </span></span>
+<span><span class="co">## 4       93.9    42.0 </span></span>
+<span><span class="co">## 5      115.     56.0 </span></span>
+<span><span class="co">## 6       76.6    74.9</span></span></code></pre></div>
+<p>The <em>Paramecium</em>–<em>Didinium</em> abundance time series can
+be visualized as follows:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fig_abun</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"case/abundance.csv"</span>, </span>
+<span>                                 package <span class="op">=</span> <span class="st">"pc"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="op">-</span><span class="va">time</span>,</span>
+<span>                      names_to <span class="op">=</span> <span class="st">"species"</span>, values_to <span class="op">=</span> <span class="st">"value"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">species</span>, </span>
+<span>                  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"paramecium"</span>, <span class="st">"didinium"</span><span class="op">)</span>,</span>
+<span>                  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"paramecium"</span>, <span class="st">"didinium"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">value</span>, color <span class="op">=</span> <span class="va">species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.05</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">35</span>, <span class="fl">10</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">35.5</span><span class="op">)</span>,</span>
+<span>                              expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Time (days)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">400</span>, <span class="fl">100</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">410</span><span class="op">)</span>,</span>
+<span>                              expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Abundance (#/mL)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, </span>
+<span>                              values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"paramecium"</span> <span class="op">=</span> <span class="st">"#a7b3d9"</span>, </span>
+<span>                                         <span class="st">"didinium"</span> <span class="op">=</span> <span class="st">"#38a247"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span>base_family <span class="op">=</span> <span class="st">"serif"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>        legend.direction <span class="op">=</span> <span class="st">"horizontal"</span>,</span>
+<span>        legend.position <span class="op">=</span> <span class="st">"inside"</span>,</span>
+<span>        legend.justification <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"center"</span>,<span class="st">"top"</span><span class="op">)</span>,</span>
+<span>        legend.background <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"transparent"</span>, </span>
+<span>                                                  color <span class="op">=</span> <span class="st">"transparent"</span><span class="op">)</span>,</span>
+<span>        legend.text <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,</span>
+<span>        axis.text.x <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,</span>
+<span>        axis.text.y <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,</span>
+<span>        axis.title.x <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,</span>
+<span>        axis.title.y <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fig_abun</span></span></code></pre></div>
+<div class="float">
+<img src="../reference/figures/ig/abun_plot-1.png" alt="Figure 1. Time series of Paramecium and Didinium abundances (#/mL) from an experiment by Veilleux (1979)."><div class="figcaption">
+<strong>Figure 1</strong>. Time series of
+Paramecium and Didinium abundances (#/mL) from an experiment by Veilleux
+(1979).</div>
+</div>
+<p>The observed time series are reconstructed using time-delay embedding
+to obtain the shadow manifolds (measurements). The reconstructed
+measurements are then used to evaluate the causality between the two
+interacting species.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mp</span> <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/embed.html" class="external-link">embed</a></span><span class="op">(</span><span class="va">abun</span><span class="op">$</span><span class="va">paramecium</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">md</span> <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/embed.html" class="external-link">embed</a></span><span class="op">(</span><span class="va">abun</span><span class="op">$</span><span class="va">didinium</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<p>The Imbalance Gain is subsequently calculated to quantify the
+additional information provided by one species about the future state of
+the other. The analysis is performed in both directions, <span class="math inline">\(paramecium \rightarrow didinium\)</span> and <span class="math inline">\(didinium \rightarrow paramecium\)</span>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p_self_imb</span> <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dbl</a></span><span class="op">(</span></span>
+<span>    <span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, </span>
+<span>    \<span class="op">(</span><span class="va">.h</span><span class="op">)</span> <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/imbalance_gain.html">imbalance_gain</a></span><span class="op">(</span><span class="va">mp</span>, <span class="va">mp</span>, alpha <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>                                  h <span class="op">=</span> <span class="va">.h</span>, threads <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">d_self_imb</span> <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dbl</a></span><span class="op">(</span></span>
+<span>    <span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, </span>
+<span>    \<span class="op">(</span><span class="va">.h</span><span class="op">)</span> <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/imbalance_gain.html">imbalance_gain</a></span><span class="op">(</span><span class="va">md</span>, <span class="va">md</span>, alpha <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>                                  h <span class="op">=</span> <span class="va">.h</span>, threads <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ig_p2d</span> <span class="op">=</span> <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/imbalance_gain.html">imbalance_gain</a></span><span class="op">(</span><span class="va">mp</span>, <span class="va">md</span>, alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,by <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>,</span>
+<span>                                 h <span class="op">=</span> <span class="fl">10</span>, threads <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ig_d2p</span> <span class="op">=</span> <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/imbalance_gain.html">imbalance_gain</a></span><span class="op">(</span><span class="va">md</span>, <span class="va">mp</span>, alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,by <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>,</span>
+<span>                                 h <span class="op">=</span> <span class="fl">10</span>, threads <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Imbalance Gain for paramecium -&gt; didinium: %.2f %%\n"</span>, <span class="fl">100</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">ig_p2d</span><span class="op">)</span> <span class="op">/</span> <span class="va">ig_p2d</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Imbalance Gain for paramecium -&gt; didinium: 99.06 %</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Imbalance Gain for didinium -&gt; paramecium: %.2f %%\n"</span>, <span class="fl">100</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">ig_d2p</span><span class="op">)</span> <span class="op">/</span> <span class="va">ig_d2p</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Imbalance Gain for didinium -&gt; paramecium: 99.00 %</span></span></code></pre></div>
+<p>The imbalance gains for <span class="math inline">\(paramecium
+\rightarrow didinium\)</span> and <span class="math inline">\(didinium
+\rightarrow paramecium\)</span> are both greater than <span class="math inline">\(0\)</span>, which provides evidence of a
+bidirectional causal relationship between them.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

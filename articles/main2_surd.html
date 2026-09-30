@@ -350,7 +350,7 @@ Productivity (NPP) in Mainland China<a class="anchor" aria-label="anchor" href="
 <span><span class="co">## min values  :          164,   384.340942, -47.819405, -122.200386,  0.033904</span></span>
 <span><span class="co">## max values  : 16606.333984, 23878.355469, 263.693787, 5350.490234, 44.903122</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res_npp</span> <span class="op">=</span> <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/surd.html">surd</a></span><span class="op">(</span><span class="va">npp</span>,<span class="fl">1</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">5</span>,</span>
+<code class="sourceCode R"><span><span class="va">res_npp</span> <span class="op">=</span> <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/surd.html">surd</a></span><span class="op">(</span><span class="va">npp</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">5</span>,</span>
 <span>                        lag <span class="op">=</span> <span class="fl">2</span>, bin <span class="op">=</span> <span class="fl">10</span>, threads <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">res_npp</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 22 × 3</span></span>
