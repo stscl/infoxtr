@@ -72,8 +72,4 @@ Zhang, X., Chen, L., 2025. Quantifying interventional causality by
 knockoff operation. Science Advances 11.
 <https://doi.org/10.1126/sciadv.adu6464>.
 
-Varley, T.F., 2025. Information theory for complex systems scientists:
-What, why, and how. Physics Reports 1148, 1–55.
-<https://doi.org/10.1016/j.physrep.2025.09.007>.
-
  
