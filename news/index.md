@@ -2,6 +2,8 @@
 
 ## infoxtr 0.3
 
+CRAN release: 2026-09-30
+
 #### new
 
 - Provide R-level API and vignette for infomation imbalance and
