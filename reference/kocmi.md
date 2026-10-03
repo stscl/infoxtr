@@ -35,7 +35,7 @@ kocmi(
 
 - agent:
 
-  Integer vector of column indices for the source (agent) variables.
+  Integer vector of column indices for the agent variables.
 
 - conds:
 
