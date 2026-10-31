@@ -77,10 +77,6 @@ RcppContTE <- function(mat, target, agent, lag_p = 3L, lag_q = 3L, k = 3L, alg =
     .Call(`_infoxtr_RcppContTE`, mat, target, agent, lag_p, lag_q, k, alg, base, na_comp, normalize, lag_single)
 }
 
-RcppDiscSURD <- function(mat, max_order = 3L, threads = 1L, base = 2.0, normalize = TRUE) {
-    .Call(`_infoxtr_RcppDiscSURD`, mat, max_order, threads, base, normalize)
-}
-
 RcppKOCMI <- function(mat, target, agent, conds, knockoff, null_knockoff = NULL, type = "cont", nboots = 10000L, k = 3L, alg = 0L, threads = 1L, seed = 123456789L, base = 2.0, method = "equal", contain_null = TRUE, na_comp = TRUE) {
     .Call(`_infoxtr_RcppKOCMI`, mat, target, agent, conds, knockoff, null_knockoff, type, nboots, k, alg, threads, seed, base, method, contain_null, na_comp)
 }
@@ -115,5 +111,9 @@ RcppNN4DistMatSub <- function(distmat, lib, pred, k, include_self = FALSE) {
 
 RcppSURD <- function(mat, target, agent, lag = 1L, max_order = 3L, threads = 1L, base = 2.0, normalize = TRUE, bin = as.integer( c(5)), method = as.character( c("equal")), nb = NULL, nrows = NULL) {
     .Call(`_infoxtr_RcppSURD`, mat, target, agent, lag, max_order, threads, base, normalize, bin, method, nb, nrows)
+}
+
+RcppDiscSURD <- function(mat, max_order = 3L, threads = 1L, base = 2.0, normalize = TRUE) {
+    .Call(`_infoxtr_RcppDiscSURD`, mat, max_order, threads, base, normalize)
 }
 

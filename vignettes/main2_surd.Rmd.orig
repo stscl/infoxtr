@@ -166,9 +166,9 @@ ntd_maps = cowplot::plot_grid(
 ntd_maps
 ```
 
-It is particularly important to note that the `surd` function in `infoxtr` can only handle entirely discrete data; continuous inputs can be discretized using appropriate methods prior to use.
-
 For the continuous response variable (NTD incidence rate), we systematically evaluated five discretization methods (standard deviation, equal interval, quantile, natural breaks, and head/tail breaks) combined with class numbers ranging from 3 to 10. The specific discretization scheme that maximized the unique information in the SURD results was selected to process the NTD incidence rate for the final analysis.
+
+> It is particularly important to note that the `surd_discrete` function in `infoxtr` can only handle entirely discrete data; continuous inputs can be discretized using appropriate methods prior to use.
 
 ```{r opt_params}
 params = tidyr::expand_grid(
@@ -182,7 +182,7 @@ params = params |>
       g = ntd |> 
         dplyr::mutate(incidence = infoxtr::discretize(incidence, n = bin, method = method)) |> 
         as.matrix() |> 
-        infoxtr:::RcppDiscSURD(max_order = 3)
+        infoxtr::surd_discrete(1,2:4)
       
       if (length(which(g$types == "U")) == 0)
         return(0.0)
@@ -199,7 +199,7 @@ The optimal parameter combination among the candidates is to discretize the NTD 
 res_surd_ntd = ntd |> 
   dplyr::mutate(incidence = infoxtr::discretize(incidence, n = 3, method = "natural")) |> 
   as.matrix() |> 
-  infoxtr:::RcppDiscSURD(max_order = 3)
+  infoxtr::surd_discrete(1,2:4)
 tibble::as_tibble(res_surd_ntd)
 ```
 

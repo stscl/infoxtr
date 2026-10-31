@@ -323,20 +323,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// RcppDiscSURD
-Rcpp::List RcppDiscSURD(SEXP mat, int max_order, int threads, double base, bool normalize);
-RcppExport SEXP _infoxtr_RcppDiscSURD(SEXP matSEXP, SEXP max_orderSEXP, SEXP threadsSEXP, SEXP baseSEXP, SEXP normalizeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< SEXP >::type mat(matSEXP);
-    Rcpp::traits::input_parameter< int >::type max_order(max_orderSEXP);
-    Rcpp::traits::input_parameter< int >::type threads(threadsSEXP);
-    Rcpp::traits::input_parameter< double >::type base(baseSEXP);
-    Rcpp::traits::input_parameter< bool >::type normalize(normalizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(RcppDiscSURD(mat, max_order, threads, base, normalize));
-    return rcpp_result_gen;
-END_RCPP
-}
 // RcppKOCMI
 Rcpp::NumericVector RcppKOCMI(const Rcpp::NumericMatrix& mat, const Rcpp::IntegerVector& target, const Rcpp::IntegerVector& agent, const Rcpp::IntegerVector& conds, const Rcpp::NumericMatrix& knockoff, Rcpp::Nullable<Rcpp::NumericMatrix> null_knockoff, const std::string& type, int nboots, int k, int alg, int threads, int seed, double base, const std::string& method, bool contain_null, bool na_comp);
 RcppExport SEXP _infoxtr_RcppKOCMI(SEXP matSEXP, SEXP targetSEXP, SEXP agentSEXP, SEXP condsSEXP, SEXP knockoffSEXP, SEXP null_knockoffSEXP, SEXP typeSEXP, SEXP nbootsSEXP, SEXP kSEXP, SEXP algSEXP, SEXP threadsSEXP, SEXP seedSEXP, SEXP baseSEXP, SEXP methodSEXP, SEXP contain_nullSEXP, SEXP na_compSEXP) {
@@ -476,6 +462,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// RcppDiscSURD
+Rcpp::List RcppDiscSURD(SEXP mat, int max_order, int threads, double base, bool normalize);
+RcppExport SEXP _infoxtr_RcppDiscSURD(SEXP matSEXP, SEXP max_orderSEXP, SEXP threadsSEXP, SEXP baseSEXP, SEXP normalizeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< SEXP >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< int >::type max_order(max_orderSEXP);
+    Rcpp::traits::input_parameter< int >::type threads(threadsSEXP);
+    Rcpp::traits::input_parameter< double >::type base(baseSEXP);
+    Rcpp::traits::input_parameter< bool >::type normalize(normalizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(RcppDiscSURD(mat, max_order, threads, base, normalize));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_infoxtr_RcppDisc", (DL_FUNC) &_infoxtr_RcppDisc, 10},
@@ -497,7 +497,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_infoxtr_RcppContCMI", (DL_FUNC) &_infoxtr_RcppContCMI, 9},
     {"_infoxtr_RcppDiscTE", (DL_FUNC) &_infoxtr_RcppDiscTE, 9},
     {"_infoxtr_RcppContTE", (DL_FUNC) &_infoxtr_RcppContTE, 11},
-    {"_infoxtr_RcppDiscSURD", (DL_FUNC) &_infoxtr_RcppDiscSURD, 5},
     {"_infoxtr_RcppKOCMI", (DL_FUNC) &_infoxtr_RcppKOCMI, 16},
     {"_infoxtr_RcppGenLatticeLag", (DL_FUNC) &_infoxtr_RcppGenLatticeLag, 3},
     {"_infoxtr_RcppGenGridLag", (DL_FUNC) &_infoxtr_RcppGenGridLag, 3},
@@ -507,6 +506,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_infoxtr_RcppNN4DistMat", (DL_FUNC) &_infoxtr_RcppNN4DistMat, 3},
     {"_infoxtr_RcppNN4DistMatSub", (DL_FUNC) &_infoxtr_RcppNN4DistMatSub, 5},
     {"_infoxtr_RcppSURD", (DL_FUNC) &_infoxtr_RcppSURD, 12},
+    {"_infoxtr_RcppDiscSURD", (DL_FUNC) &_infoxtr_RcppDiscSURD, 5},
     {NULL, NULL, 0}
 };
 

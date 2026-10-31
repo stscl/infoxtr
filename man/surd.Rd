@@ -5,6 +5,7 @@
 \alias{surd,data.frame-method}
 \alias{surd,sf-method}
 \alias{surd,SpatRaster-method}
+\alias{surd_discrete}
 \title{Synergistic-Unique-Redundant Decomposition}
 \usage{
 \S4method{surd}{data.frame}(
@@ -41,6 +42,16 @@
   lag = 1,
   bin = 5,
   method = "equal",
+  max.order = 10,
+  threads = 1,
+  base = 2,
+  normalize = TRUE
+)
+
+surd_discrete(
+  data,
+  target,
+  agent,
   max.order = 10,
   threads = 1,
   base = 2,
@@ -92,10 +103,18 @@ support variable-specific settings using R-style recycling:
 \item length 2: first for the target, second for all agents
 \item length > 2: first for the target, remaining values are recycled across agents
 }
+
+\code{surd_discrete} only supports discrete input data.
 }
 \examples{
 columbus = sf::read_sf(system.file("case/columbus.gpkg", package="spEDM"))
-infoxtr::surd(columbus, 1, 2:3)
+infoxtr::surd(columbus,1,2:3)
+
+columbus = sf::read_sf(system.file("case/columbus.gpkg", package="spEDM"))
+x = infoxtr::discretize(columbus$hoval, n=5, method="equal")
+y = infoxtr::discretize(columbus$inc,   n=5, method="equal")
+z = infoxtr::discretize(columbus$crime, n=5, method="equal")
+infoxtr::surd_discrete(cbind(x,y,z),1,2:3)
 
 }
 \references{
