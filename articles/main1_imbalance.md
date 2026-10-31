@@ -92,7 +92,7 @@ conditional Information Imbalance over the range of \\\alpha_X\\. The
 same formulation can be applied in the reverse direction to assess
 \\Y\rightarrow X\mid Z\\.
 
-## Example Cases
+## Example
 
 We illustrate the Imbalance Gain using the *Paramecium*–*Didinium*
 abundance data from the convergent cross mapping science paper. The data
