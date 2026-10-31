@@ -41,13 +41,13 @@ reference:
 - subtitle: Information flow
   contents:
   - te
-  - imbalance_gain
   - surd
   - surd_discrete
 
-- title: Knockoff-based interaction testing
+- title: Causality detection
   contents:
   - kocmi
+  - imbalance_gain
 
 - title: Miscellaneous Utility Functions
   contents:
