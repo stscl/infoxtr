@@ -276,7 +276,7 @@ handle entirely discrete data; continuous inputs can be discretized
 using appropriate methods prior to use.</p>
 </blockquote>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">params</span> <span class="op">=</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">expand_grid</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">params</span> <span class="op">=</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand_grid.html" class="external-link">expand_grid</a></span><span class="op">(</span></span>
 <span>  bin <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">10</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sd"</span>, <span class="st">"equal"</span>, <span class="st">"quantile"</span>, <span class="st">"natural"</span>, <span class="st">"headtail"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -346,7 +346,7 @@ showing the <strong>information leak</strong>.</p>
 <span></span>
 <span>  <span class="va">df</span> <span class="op">=</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>      var_nums <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu">str_extract_all</span><span class="op">(</span><span class="va">vars</span>, <span class="st">"(?&lt;=V)\\d+"</span><span class="op">)</span>,</span>
+<span>      var_nums <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_extract.html" class="external-link">str_extract_all</a></span><span class="op">(</span><span class="va">vars</span>, <span class="st">"(?&lt;=V)\\d+"</span><span class="op">)</span>,</span>
 <span>      nums_joined <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">var_nums</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">x</span>, collapse <span class="op">=</span> <span class="st">'*","*'</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>      vars_formatted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">types</span>, <span class="st">"["</span>, <span class="va">nums_joined</span>, <span class="st">"]"</span><span class="op">)</span>,</span>
 <span>      type_order <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
@@ -393,7 +393,7 @@ showing the <strong>information leak</strong>.</p>
 <span>      panel.border <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span></span>
-<span>  <span class="fu">patchwork</span><span class="fu">::</span><span class="fu">wrap_plots</span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol <span class="op">=</span> <span class="fl">2</span>, widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol <span class="op">=</span> <span class="fl">2</span>, widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>The SURD results are shown in the figure below:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -411,11 +411,11 @@ visualized below:</p>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">types</span> <span class="op">!=</span> <span class="st">"InfoLeak"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    vars_detail <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html" class="external-link">map2_chr</a></span><span class="op">(</span></span>
-<span>      <span class="fu">stringr</span><span class="fu">::</span><span class="fu">str_split</span><span class="op">(</span><span class="va">vars</span>, <span class="st">"_"</span><span class="op">)</span>,</span>
+<span>      <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_split.html" class="external-link">str_split</a></span><span class="op">(</span><span class="va">vars</span>, <span class="st">"_"</span><span class="op">)</span>,</span>
 <span>      <span class="va">types</span>,</span>
 <span>      \<span class="op">(</span><span class="va">split_vars</span>, <span class="va">type</span><span class="op">)</span> <span class="op">{</span></span>
 <span>        <span class="co"># Replace V1, V2, V3 with actual variable names</span></span>
-<span>        <span class="va">replaced_vars</span> <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu">str_replace_all</span><span class="op">(</span></span>
+<span>        <span class="va">replaced_vars</span> <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace_all</a></span><span class="op">(</span></span>
 <span>          <span class="va">split_vars</span>, </span>
 <span>          <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"V1"</span> <span class="op">=</span> <span class="st">"S"</span>, <span class="st">"V2"</span> <span class="op">=</span> <span class="st">"E"</span>, <span class="st">"V3"</span> <span class="op">=</span> <span class="st">"W"</span><span class="op">)</span></span>
 <span>          <span class="co"># c("V1" = "soiltype", "V2" = "elevation", "V3" = "watershed")</span></span>
@@ -423,7 +423,7 @@ visualized below:</p>
 <span>        <span class="co"># Select the correct UTF-8 symbol based on the type</span></span>
 <span>        <span class="va">symbol</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"R"</span><span class="op">)</span> <span class="st">" \u22C2 "</span> <span class="kw">else</span> <span class="st">" \u22C3 "</span></span>
 <span>        <span class="co"># Collapse the vector into a single string</span></span>
-<span>        <span class="fu">stringr</span><span class="fu">::</span><span class="fu">str_c</span><span class="op">(</span><span class="va">replaced_vars</span>, collapse <span class="op">=</span> <span class="va">symbol</span><span class="op">)</span></span>
+<span>        <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html" class="external-link">str_c</a></span><span class="op">(</span><span class="va">replaced_vars</span>, collapse <span class="op">=</span> <span class="va">symbol</span><span class="op">)</span></span>
 <span>      <span class="op">}</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -479,7 +479,7 @@ visualized below:</p>
 <span>    panel.border <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="fu">patchwork</span><span class="fu">::</span><span class="fu">wrap_plots</span><span class="op">(</span><span class="va">fig_a1</span>, <span class="va">fig_a2</span>, ncol <span class="op">=</span> <span class="fl">2</span>, widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">fig_a1</span>, <span class="va">fig_a2</span>, ncol <span class="op">=</span> <span class="fl">2</span>, widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
 <img src="../reference/figures/surd/fig_surd_ntd2-1.png" alt="Figure 3. SURD decomposition results for the neural tube defects dataset. D, NTD incidence; W, watershed; E, elevation; S, soil type."><div class="figcaption">
 <strong>Figure 3</strong>. SURD decomposition
