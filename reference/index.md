@@ -26,6 +26,7 @@
 - [`surd(`*`<data.frame>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
   [`surd(`*`<sf>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
   [`surd(`*`<SpatRaster>`*`)`](https://stscl.github.io/infoxtr/reference/surd.md)
+  [`surd_discrete()`](https://stscl.github.io/infoxtr/reference/surd.md)
   : Synergistic-Unique-Redundant Decomposition
 
 ## Knockoff-based interaction testing

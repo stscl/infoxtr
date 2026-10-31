@@ -2,6 +2,12 @@
 
 ## infoxtr 0.4
 
+#### new
+
+- [`surd_discrete()`](https://stscl.github.io/infoxtr/reference/surd.md)
+  is added for SURD using pre-discretized state data
+  ([\#107](https://github.com/stscl/infoxtr/issues/107)).
+
 ## infoxtr 0.3
 
 CRAN release: 2026-09-30

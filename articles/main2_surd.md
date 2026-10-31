@@ -185,10 +185,6 @@ watershed.](../reference/figures/surd/ntd_map-1.png)
 defects dataset. **a**, NTD incidence; **b**, soil type; **c**,
 elevation; **d**, watershed.
 
-It is particularly important to note that the `surd` function in
-`infoxtr` can only handle entirely discrete data; continuous inputs can
-be discretized using appropriate methods prior to use.
-
 For the continuous response variable (NTD incidence rate), we
 systematically evaluated five discretization methods (standard
 deviation, equal interval, quantile, natural breaks, and head/tail
@@ -196,6 +192,10 @@ breaks) combined with class numbers ranging from 3 to 10. The specific
 discretization scheme that maximized the unique information in the SURD
 results was selected to process the NTD incidence rate for the final
 analysis.
+
+> It is particularly important to note that the `surd_discrete` function
+> in `infoxtr` can only handle entirely discrete data; continuous inputs
+> can be discretized using appropriate methods prior to use.
 
 ``` r
 
@@ -210,7 +210,7 @@ params = params |>
       g = ntd |> 
         dplyr::mutate(incidence = infoxtr::discretize(incidence, n = bin, method = method)) |> 
         as.matrix() |> 
-        infoxtr:::RcppDiscSURD(max_order = 3)
+        infoxtr::surd_discrete(1,2:4)
       
       if (length(which(g$types == "U")) == 0)
         return(0.0)
@@ -244,7 +244,7 @@ run the code to obtain the final results:
 res_surd_ntd = ntd |> 
   dplyr::mutate(incidence = infoxtr::discretize(incidence, n = 3, method = "natural")) |> 
   as.matrix() |> 
-  infoxtr:::RcppDiscSURD(max_order = 3)
+  infoxtr::surd_discrete(1,2:4)
 tibble::as_tibble(res_surd_ntd)
 ## # A tibble: 7 × 3
 ##   vars     types    values

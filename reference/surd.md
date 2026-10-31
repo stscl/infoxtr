@@ -47,6 +47,16 @@ surd(
   base = 2,
   normalize = TRUE
 )
+
+surd_discrete(
+  data,
+  target,
+  agent,
+  max.order = 10,
+  threads = 1,
+  base = 2,
+  normalize = TRUE
+)
 ```
 
 ## Arguments
@@ -127,6 +137,8 @@ variable-specific settings using R-style recycling:
 - length \> 2: first for the target, remaining values are recycled
   across agents
 
+`surd_discrete` only supports discrete input data.
+
 ## References
 
 Martinez-Sanchez, A., Arranz, G., Lozano-Duran, A., 2024. Decomposing
@@ -137,7 +149,7 @@ Communications 15.
 
 ``` r
 columbus = sf::read_sf(system.file("case/columbus.gpkg", package="spEDM"))
-infoxtr::surd(columbus, 1, 2:3)
+infoxtr::surd(columbus,1,2:3)
 #> $vars
 #> [1] "V1"       "V2"       "V1_V2"    "V1_V2"    "InfoLeak"
 #> 
@@ -146,5 +158,20 @@ infoxtr::surd(columbus, 1, 2:3)
 #> 
 #> $values
 #> [1] 0.06337975 0.06743535 0.46246679 0.40671810 0.58577187
+#> 
+
+columbus = sf::read_sf(system.file("case/columbus.gpkg", package="spEDM"))
+x = infoxtr::discretize(columbus$hoval, n=5, method="equal")
+y = infoxtr::discretize(columbus$inc,   n=5, method="equal")
+z = infoxtr::discretize(columbus$crime, n=5, method="equal")
+infoxtr::surd_discrete(cbind(x,y,z),1,2:3)
+#> $vars
+#> [1] "V1"       "V2"       "V1_V2"    "V1_V2"    "InfoLeak"
+#> 
+#> $types
+#> [1] "U"        "U"        "R"        "S"        "InfoLeak"
+#> 
+#> $values
+#> [1] 0.14994851 0.07324161 0.39792832 0.37888156 0.56318338
 #> 
 ```

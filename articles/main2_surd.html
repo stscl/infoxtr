@@ -262,10 +262,6 @@ of variables in the neural tube defects dataset. <strong>a</strong>, NTD
 incidence; <strong>b</strong>, soil type; <strong>c</strong>, elevation;
 <strong>d</strong>, watershed.</div>
 </div>
-<p>It is particularly important to note that the <code>surd</code>
-function in <code>infoxtr</code> can only handle entirely discrete data;
-continuous inputs can be discretized using appropriate methods prior to
-use.</p>
 <p>For the continuous response variable (NTD incidence rate), we
 systematically evaluated five discretization methods (standard
 deviation, equal interval, quantile, natural breaks, and head/tail
@@ -273,6 +269,12 @@ breaks) combined with class numbers ranging from 3 to 10. The specific
 discretization scheme that maximized the unique information in the SURD
 results was selected to process the NTD incidence rate for the final
 analysis.</p>
+<blockquote>
+<p>It is particularly important to note that the
+<code>surd_discrete</code> function in <code>infoxtr</code> can only
+handle entirely discrete data; continuous inputs can be discretized
+using appropriate methods prior to use.</p>
+</blockquote>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">params</span> <span class="op">=</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">expand_grid</span><span class="op">(</span></span>
 <span>  bin <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">10</span>,</span>
@@ -285,7 +287,7 @@ analysis.</p>
 <span>      <span class="va">g</span> <span class="op">=</span> <span class="va">ntd</span> <span class="op">|&gt;</span> </span>
 <span>        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>incidence <span class="op">=</span> <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/discretize.html">discretize</a></span><span class="op">(</span><span class="va">incidence</span>, n <span class="op">=</span> <span class="va">bin</span>, method <span class="op">=</span> <span class="va">method</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>        <span class="fu">infoxtr</span><span class="fu">:::</span><span class="fu">RcppDiscSURD</span><span class="op">(</span>max_order <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span>        <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/surd.html">surd_discrete</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
 <span>      </span>
 <span>      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">g</span><span class="op">$</span><span class="va">types</span> <span class="op">==</span> <span class="st">"U"</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
 <span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span></span>
@@ -315,7 +317,7 @@ method. We run the code to obtain the final results:</p>
 <code class="sourceCode R"><span><span class="va">res_surd_ntd</span> <span class="op">=</span> <span class="va">ntd</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>incidence <span class="op">=</span> <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/discretize.html">discretize</a></span><span class="op">(</span><span class="va">incidence</span>, n <span class="op">=</span> <span class="fl">3</span>, method <span class="op">=</span> <span class="st">"natural"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">infoxtr</span><span class="fu">:::</span><span class="fu">RcppDiscSURD</span><span class="op">(</span>max_order <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span>  <span class="fu">infoxtr</span><span class="fu">::</span><span class="fu"><a href="../reference/surd.html">surd_discrete</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">res_surd_ntd</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 7 × 3</span></span>
 <span><span class="co">##   vars     types    values</span></span>
