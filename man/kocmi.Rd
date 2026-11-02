@@ -12,7 +12,7 @@ kocmi(
   knockoff,
   null_knockoff = NULL,
   type = c("cont", "disc"),
-  nboots = 10000,
+  nboots = 100,
   k = 3,
   threads = 1,
   seed = 42,
@@ -30,15 +30,13 @@ kocmi(
 
 \item{conds}{Integer vector of column indices for the conditioning variables.}
 
-\item{knockoff}{Knockoff realizations constructed for the \code{agent} variable
-while keeping the \code{target} variable unchanged. Each column corresponds to
-one Monte Carlo knockoff sample generated using the remaining variables
-except the target.}
+\item{knockoff}{Knockoff realizations for the \code{agent} variable. Each column is
+a Monte Carlo realization generated using the \code{agent} and \code{conds} variables.}
 
-\item{null_knockoff}{(optional) Knockoff realizations generated under the
-null setting where all variables are jointly used to construct knockoffs.
-Each column represents one Monte Carlo sample. If \code{contain_null = FALSE},
-this argument can be \code{NULL}.}
+\item{null_knockoff}{(optional) Knockoff realizations generated under the null
+setting where all variables (\code{target}, \code{agent}, \code{conds}) are jointly used to
+construct knockoffs. Each column represents one Monte Carlo realization. Must
+be \code{NULL} if \code{contain_null = FALSE}.}
 
 \item{type}{(optional) Estimation method: \code{"disc"} for discrete mutual information
 or \code{"cont"} for continuous mutual information (KSG estimator).}
@@ -47,8 +45,8 @@ or \code{"cont"} for continuous mutual information (KSG estimator).}
 test for evaluating the significance of the mean information difference.}
 
 \item{k}{(optional) For \code{type = "cont"}, the number of nearest neighbors used by
-the continuous conditional mutual information estimator.
-For \code{type = "disc"}, the number of bins used for discretization.}
+the continuous conditional mutual information estimator. For \code{type = "disc"}, the
+number of bins used for discretization.}
 
 \item{threads}{(optional) Number of threads used.}
 
@@ -61,13 +59,9 @@ Defaults to \code{exp(1)} (nats). Use \code{2} for bits or \code{10} for dits.}
 \code{"sd"}, \code{"equal"}, \code{"geometric"}, \code{"quantile"},
 \verb{"natural("jenks")"}, or \code{"headtail"("headtails")}.}
 
-\item{contain_null}{(optional) Logical. If \code{TRUE}, the test statistic is
-computed using knockoffs generated under the null model (provided in
-\code{null_knockoff}). In this case the difference is defined as
-\eqn{I(Y; X_{null} | Z) - I(Y; X_{knockoff} | Z)}.
-If \code{FALSE}, the original conditional mutual information
-\eqn{I(Y; X | Z)} is used instead and compared against the knockoff
-estimates \eqn{I(Y; X_{knockoff} | Z)}.}
+\item{contain_null}{(optional) Logical. If \code{TRUE}, the test statistic is computed as
+\eqn{I(Y; X_{null} | Z) - I(Y; X_{knockoff} | Z)}. If \code{FALSE}, it is computed as
+\eqn{I(Y; X | Z) - I(Y; X_{knockoff} | Z)}.}
 }
 \value{
 A named numeric vector.
