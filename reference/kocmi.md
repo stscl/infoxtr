@@ -13,7 +13,7 @@ kocmi(
   knockoff,
   null_knockoff = NULL,
   type = c("cont", "disc"),
-  nboots = 10000,
+  nboots = 100,
   k = 3,
   threads = 1,
   seed = 42,
@@ -43,17 +43,15 @@ kocmi(
 
 - knockoff:
 
-  Knockoff realizations constructed for the `agent` variable while
-  keeping the `target` variable unchanged. Each column corresponds to
-  one Monte Carlo knockoff sample generated using the remaining
-  variables except the target.
+  Knockoff realizations for the `agent` variable. Each column is a Monte
+  Carlo realization generated using the `agent` and `conds` variables.
 
 - null_knockoff:
 
   (optional) Knockoff realizations generated under the null setting
-  where all variables are jointly used to construct knockoffs. Each
-  column represents one Monte Carlo sample. If `contain_null = FALSE`,
-  this argument can be `NULL`.
+  where all variables (`target`, `agent`, `conds`) are jointly used to
+  construct knockoffs. Each column represents one Monte Carlo
+  realization. Must be `NULL` if `contain_null = FALSE`.
 
 - type:
 
@@ -93,12 +91,9 @@ kocmi(
 
 - contain_null:
 
-  (optional) Logical. If `TRUE`, the test statistic is computed using
-  knockoffs generated under the null model (provided in
-  `null_knockoff`). In this case the difference is defined as \\I(Y;
-  X\_{null} \| Z) - I(Y; X\_{knockoff} \| Z)\\. If `FALSE`, the original
-  conditional mutual information \\I(Y; X \| Z)\\ is used instead and
-  compared against the knockoff estimates \\I(Y; X\_{knockoff} \| Z)\\.
+  (optional) Logical. If `TRUE`, the test statistic is computed as
+  \\I(Y; X\_{null} \| Z) - I(Y; X\_{knockoff} \| Z)\\. If `FALSE`, it is
+  computed as \\I(Y; X \| Z) - I(Y; X\_{knockoff} \| Z)\\.
 
 ## Value
 
@@ -122,5 +117,5 @@ kn2 = replicate(50, stats::rnorm(100))
 mat = replicate(3, stats::rnorm(100))
 infoxtr::kocmi(mat, 1, 2, 3, kn1, kn2)
 #>     t_stat    p_value 
-#> -0.2059844  0.1540000 
+#> -0.2059844  0.2100000 
 ```
