@@ -101,7 +101,7 @@ To generate the visualization, please ensure the required packages are installed
 
 # Example
 
-This vignette utilizes the classic neural tube defects (NTD) dataset, widely used in geographical detector tutorials to demonstrate the use of SURD. It is particularly important to note that the `surd` input in `infoxtr` must consist entirely of discrete data; continuous inputs can be discretized using appropriate methods prior to use.
+This vignette utilizes the classic neural tube defects (NTD) dataset, widely used in geographical detector tutorials to demonstrate the use of SURD.
 
 First, we install the required R packages to run the subsequent code:
 
@@ -239,6 +239,8 @@ cowplot::plot_grid(
     bar_cols = c("black", "white")) -> ntd_maps
 ntd_maps
 ```
+
+ It is particularly important to note that the `surd` input in `infoxtr` must consist entirely of discrete data; continuous inputs can be discretized using appropriate methods prior to use.
 
 ## Air Pollution and Cardiovascular Health in Hong Kong
 
