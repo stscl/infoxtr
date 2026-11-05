@@ -110,6 +110,7 @@ if (!requireNamespace("dplyr")) install.packages("dplyr")
 if (!requireNamespace("tibble")) install.packages("tibble")
 if (!requireNamespace("stringr")) install.packages("stringr")
 if (!requireNamespace("ggplot2")) install.packages("ggplot2")
+if (!requireNamespace("viridis")) install.packages("viridis")
 if (!requireNamespace("patchwork")) install.packages("patchwork")
 if (!requireNamespace("gdverse")) install.packages("gdverse")
 if (!requireNamespace("infoxtr")) install.packages("infoxtr")
@@ -135,6 +136,108 @@ ntd = disease |>
   sf::st_drop_geometry() |> 
   dplyr::select(-SP_ID)
 ntd
+```
+
+The NTD dataset can be visualized as follows:
+
+``` {r ntd_map,fig.width=6.5,fig.height=3.95,fig.dpi=100,fig.cap=knitr::asis_output("**Figure 1**. Time series of Paramecium and Didinium abundances (#/mL) from an experiment by Veilleux (1979).")}
+fig1 = ggplot2::ggplot(data = disease) +
+  ggplot2::geom_sf(ggplot2::aes(fill = incidence), lwd = .1, color = 'grey') +
+  viridis::scale_fill_viridis(option="mako", direction = -1) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 12.5) +
+  ggplot2::theme(
+    axis.text = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    axis.title = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_blank(),
+    legend.direction = "horizontal",
+    legend.position = 'inside',
+    legend.justification = c(-0.05, -0.095),
+    legend.background = ggplot2::element_rect(fill = 'transparent', color = NA)
+  )
+fig2 = soiltype |> 
+  dplyr::mutate(soiltype = factor(soiltype)) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_sf(ggplot2::aes(fill = soiltype), lwd = .1, color = 'grey') +
+  ggplot2::scale_fill_manual(
+    values = c("#00bfbf", "#7aff00", "#ffc100",
+               "#cf8035", "#c0abab")
+  ) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 12.5) +
+  ggplot2::theme(
+    axis.text = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    axis.title = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_blank(),
+    legend.direction = "horizontal",
+    legend.position = 'inside',
+    legend.justification = c(-0.05, -0.05),
+    legend.background = ggplot2::element_rect(fill = 'transparent', color = NA)
+  )
+fig3 = elevation |> 
+  dplyr::mutate(elevation = factor(elevation)) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_sf(ggplot2::aes(fill = elevation), lwd = .1, color = 'grey') +
+  ggplot2::scale_fill_manual(
+    values = c("#94ab84", "#b2c38f", "#d7d9a7", "#e6ca94",
+               "#c5a582", "#a4856c", "#a05d42", "#c0abab")
+  ) +
+  ggplot2::guides(fill = ggplot2::guide_legend(byrow = TRUE)) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 12.5) +
+  ggplot2::theme(
+    axis.text = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    axis.title = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_blank(),
+    legend.direction = "horizontal",
+    legend.position = 'inside',
+    legend.justification = c(-0.05, -0.245),
+    legend.background = ggplot2::element_rect(fill = 'transparent', color = NA)
+  )
+fig4 = watershed |> 
+  dplyr::mutate(watershed = factor(watershed)) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_sf(ggplot2::aes(fill = watershed), lwd = .1, color = 'grey') +
+  ggplot2::scale_fill_manual(
+    values = c("#bce6ff", "#55d7ff", "#34bfff", "#17a0fc", "#176ef2",
+               "#0026de", "#0010cd", "#1505af", "#1a0089")
+  ) +
+  ggplot2::guides(fill = ggplot2::guide_legend(byrow = TRUE)) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 12.5) +
+  ggplot2::theme(
+    axis.text = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    axis.title = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_blank(),
+    legend.direction = "horizontal",
+    legend.position = 'inside',
+    legend.justification = c(-0.05, -0.245),
+    legend.background = ggplot2::element_rect(fill = 'transparent', color = NA)
+  )
+
+cowplot::plot_grid(
+  fig1, fig2, fig3, fig4, nrow = 2, label_fontfamily = "serif",
+  labels = paste0("(", letters[1:4], ")"),
+  label_fontface = "bold", label_size = 15, label_x = -0.075,
+  hjust = -1.5, align = "hv") +
+  ggspatial::annotation_north_arrow(
+    location = "tr",
+    pad_x = ggplot2::unit(0.45, "cm"), 
+    pad_y = ggplot2::unit(0.75, "cm"),
+    style = ggspatial::north_arrow_fancy_orienteering(
+    text_family = "serif", text_face = "bold")) +
+  ggspatial::annotation_scale(
+    location = "tr", 
+    width_hint = 0.15,  
+    height = ggplot2::unit(0.2, "cm"),
+    pad_x = ggplot2::unit(0.25, "cm"), 
+    pad_y = ggplot2::unit(0.25, "cm"),
+    bar_cols = c("black", "white")) -> ntd_maps
+ntd_maps
 ```
 
 ## Air Pollution and Cardiovascular Health in Hong Kong
