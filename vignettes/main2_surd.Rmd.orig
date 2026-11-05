@@ -70,7 +70,7 @@ ntd
 
 The NTD dataset can be visualized as follows:
 
-``` {r ntd_map,fig.width=6.5,fig.height=3.95,fig.dpi=100,fig.cap=knitr::asis_output("**Figure 1**. Time series of Paramecium and Didinium abundances (#/mL) from an experiment by Veilleux (1979).")}
+``` {r ntd_map,fig.width=8.05,fig.height=7.35,fig.dpi=100,fig.cap=knitr::asis_output("**Figure 1**. Spatial distribution of variables in the neural tube defects dataset.")}
 fig1 = ggplot2::ggplot(data = disease) +
   ggplot2::geom_sf(ggplot2::aes(fill = incidence), lwd = .1, color = 'grey') +
   viridis::scale_fill_viridis(option="mako", direction = -1) +
