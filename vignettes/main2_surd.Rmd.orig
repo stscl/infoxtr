@@ -163,10 +163,9 @@ ntd_maps = cowplot::plot_grid(
 ntd_maps
 ```
 
-It is particularly important to note that the `surd` input in `infoxtr` must consist entirely of discrete data; continuous inputs can be discretized using appropriate methods prior to use.
+It is particularly important to note that the `surd` function in `infoxtr` can only handle entirely discrete data; continuous inputs can be discretized using appropriate methods prior to use.
 
-
-For the continuous response variable (NTD incidence rate), we systematically evaluated five discretization methods (standard deviation, equal interval, quantile, natural breaks, and head/tail breaks) combined with class numbers ranging from 3 to 10. The specific discretization scheme that maximized the unique information in the SID results was selected to process the NTD incidence rate for the final analysis.
+For the continuous response variable (NTD incidence rate), we systematically evaluated five discretization methods (standard deviation, equal interval, quantile, natural breaks, and head/tail breaks) combined with class numbers ranging from 3 to 10. The specific discretization scheme that maximized the unique information in the SURD results was selected to process the NTD incidence rate for the final analysis.
 
 To simplify visualization, a plotting function is provided below, which produces a SURD decomposition plot — a grouped bar chart of **unique (U)**, **synergistic (S)**, and **redundant (R)** components, along with a side panel showing the **information leak**.
 
