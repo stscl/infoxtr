@@ -167,6 +167,8 @@ It is particularly important to note that the `surd` function in `infoxtr` can o
 
 For the continuous response variable (NTD incidence rate), we systematically evaluated five discretization methods (standard deviation, equal interval, quantile, natural breaks, and head/tail breaks) combined with class numbers ranging from 3 to 10. The specific discretization scheme that maximized the unique information in the SURD results was selected to process the NTD incidence rate for the final analysis.
 
+
+
 To simplify visualization, a plotting function is provided below, which produces a SURD decomposition plot — a grouped bar chart of **unique (U)**, **synergistic (S)**, and **redundant (R)** components, along with a side panel showing the **information leak**.
 
 ```{r viz_surd_utils}
@@ -232,78 +234,10 @@ utils_plot_surd = \(surd_list,threshold = 0,style = "shallow") {
 }
 ```
 
-## Air Pollution and Cardiovascular Health in Hong Kong
-
-```{r load_cvd_data}
-cvd = readr::read_csv(system.file("case/cvd.csv",package = "tEDM"))
-head(cvd)
-```
-
-```{r fig_cvds_ts,fig.width=6.5,fig.height=3.75,fig.dpi=100,fig.cap=knitr::asis_output("**Figure 1**. Time series of air pollutants and confirmed CVD cases in Hong Kong from March 1995 to November 1997.")}
-cvd_long = cvd |>
-  tibble::rowid_to_column("id") |>
-  tidyr::pivot_longer(cols = -id,
-                      names_to = "variable", values_to = "value")
-
-fig_cvds_ts = ggplot2::ggplot(cvd_long, ggplot2::aes(x = id, y = value, color = variable)) +
-  ggplot2::geom_line(linewidth = 0.5) +
-  ggplot2::labs(x = "Days (from 1995-3 to 1997-11)", y = "Concentrations or \nNO. of CVD admissions", color = "") +
-  ggplot2::theme_bw() +
-  ggplot2::theme(legend.direction = "horizontal",
-                 legend.position = "inside",
-                 legend.justification = c("center", "top"),
-                 legend.background = ggplot2::element_rect(fill = "transparent", color = NA))
-fig_cvds_ts
-```
-
-To investigate the causal influences of air pollutants on the incidence of cardiovascular diseases, we performed SURD analysis using a time lag step `3` and `10` discretization bins.
-
-```{r surd_cvds}
-res_cvds = infoxtr::surd(cvd, 1, 2:5,
-                         lag = 15, bin = 10, threads = 6)
-tibble::as_tibble(res_cvds)
-```
-
 The SURD results are shown in the figure below:
 
-```{r fig_surd_cvds,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 2**. SURD decomposition results between different air pollutants and cardiovascular diseases.")}
+```{r fig_surd_ntd,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 2**. SURD decomposition results between different air pollutants and cardiovascular diseases.")}
 utils_plot_surd(res_cvds)
-```
-
-## Population Density and Its Drivers in Mainland China
-
-```{r load_popd_data}
-popd_nb = spdep::read.gal(system.file("case/popd_nb.gal",package = "spEDM"))
-popd = readr::read_csv(system.file("case/popd.csv",package = "spEDM"))
-popd_sf = sf::st_as_sf(popd, coords = c("lon","lat"), crs = 4326)
-popd_sf
-```
-
-```{r surd_popd}
-res_popd = infoxtr::surd(popd_sf, 1, 2:5,
-                         lag = 3, bin = 10, nb = popd_nb, threads = 6)
-tibble::as_tibble(res_popd)
-```
-
-```{r fig_surd_popd,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 3**. SURD decomposition results between population density and its Drivers.")}
-utils_plot_surd(res_popd)
-```
-
-## Influence of Climatic and Topographic Factors on Net Primary Productivity (NPP) in Mainland China
-
-```{r load_npp_data}
-npp = terra::rast(system.file("case/npp.tif", package = "spEDM"))
-npp
-```
-
-```{r surd_npp}
-res_npp = infoxtr::surd(npp, 1, 2:5,
-                        lag = 2, bin = 10, threads = 6)
-tibble::as_tibble(res_npp)
-```
-
-```{r fig_surd_npp,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 4**. SURD decomposition results between climatic and topographic factors and npp.")}
-utils_plot_surd(res_npp)
 ```
 
 ---
