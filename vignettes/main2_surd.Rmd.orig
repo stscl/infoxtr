@@ -28,8 +28,6 @@ Understanding how causal influences combine and interact is essential for comple
 * **Redundant** contributions — information shared by multiple drivers;
 * **Synergistic** contributions — information only revealed when drivers are considered together.
 
-This vignette demonstrates how to perform SURD analysis using the `infoxtr` package. We will explore both temporal and spatial cases, showing how `infoxtr` unifies **time-series** and **spatial cross-sectional** causal analysis via consistent interfaces to `data.frame`, `sf`, and `SpatRaster` objects.
-
 # Utility Functions
 
 To simplify visualization, a plotting function is provided below, which produces a SURD decomposition plot — a grouped bar chart of **unique (U)**, **synergistic (S)**, and **redundant (R)** components, along with a side panel showing the **information leak**.
