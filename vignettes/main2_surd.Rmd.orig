@@ -115,7 +115,27 @@ if (!requireNamespace("gdverse")) install.packages("gdverse")
 if (!requireNamespace("infoxtr")) install.packages("infoxtr")
 ```
 
-Then load the NTD dataset from the `gdverse` package:
+Then, we load and preprocess the NTD dataset from the `gdverse` package:
+
+```{r load_data}
+ntdpath = system.file("extdata", "NTDs.gpkg", package = "gdverse")
+sf::st_layers(ntdpath)
+
+disease = sf::read_sf(ntdpath, layer = 'disease')
+soiltype = sf::read_sf(ntdpath, layer = 'soiltype')
+elevation = sf::read_sf(ntdpath, layer = 'elevation')
+watershed = sf::read_sf(ntdpath, layer = 'watershed')
+
+ntd = disease |> 
+  sf::st_centroid() |>
+  sf::st_join(soiltype[,"soiltype"]) |> 
+  sf::st_join(elevation[,"elevation"]) |>
+  sf::st_join(watershed[,"watershed"]) |>
+  dplyr::filter(dplyr::if_all(dplyr::everything(), \(.x) !is.na(.x))) |> 
+  sf::st_drop_geometry() |> 
+  dplyr::select(-SP_ID)
+ntd
+```
 
 ## Air Pollution and Cardiovascular Health in Hong Kong
 
