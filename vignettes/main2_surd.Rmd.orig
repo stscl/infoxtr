@@ -167,7 +167,28 @@ It is particularly important to note that the `surd` function in `infoxtr` can o
 
 For the continuous response variable (NTD incidence rate), we systematically evaluated five discretization methods (standard deviation, equal interval, quantile, natural breaks, and head/tail breaks) combined with class numbers ranging from 3 to 10. The specific discretization scheme that maximized the unique information in the SURD results was selected to process the NTD incidence rate for the final analysis.
 
+```{r }
+params = tidyr::expand_grid(
+  bin = 3:10,
+  method = c("sd", "equal", "quantile", "natural", "headtail")
+) 
 
+params =  params |> 
+  dplyr::mutate(
+    unique_causality = purrr::pmap_dbl(params, \(bin, method) {
+      g = ntd |> 
+        dplyr::mutate(incidence = infoxtr::discretize(incidence, n = bin, method = method)) |> 
+        as.matrix() |> 
+        infoxtr:::RcppDiscSURD(max_order = 3)
+      
+      if (length(which(g$types == "U")) == 0)
+        return(0.0)
+      else 
+        return(sum(g$values[which(g$types == "U")]))
+  })) |> 
+  dplyr::arrange(dplyr::desc(unique_causality))
+params
+```
 
 To simplify visualization, a plotting function is provided below, which produces a SURD decomposition plot — a grouped bar chart of **unique (U)**, **synergistic (S)**, and **redundant (R)** components, along with a side panel showing the **information leak**.
 
