@@ -97,17 +97,25 @@ utils_plot_surd = \(surd_list,threshold = 0,style = "shallow") {
 
 To generate the visualization, please ensure the required packages are installed by running the following code:
 
+
+
+# Example
+
+This vignette utilizes the classic neural tube defects (NTD) dataset, widely used in geographical detector tutorials to demonstrate the use of SURD. It is particularly important to note that the `surd` input in `infoxtr` must consist entirely of discrete data; continuous inputs can be discretized using appropriate methods prior to use.
+
+First, we install the required R packages to run the subsequent code:
+
 ```r
 if (!requireNamespace("dplyr")) install.packages("dplyr")
 if (!requireNamespace("tibble")) install.packages("tibble")
 if (!requireNamespace("stringr")) install.packages("stringr")
 if (!requireNamespace("ggplot2")) install.packages("ggplot2")
 if (!requireNamespace("patchwork")) install.packages("patchwork")
+if (!requireNamespace("gdverse")) install.packages("gdverse")
+if (!requireNamespace("infoxtr")) install.packages("infoxtr")
 ```
 
-# Example Cases
-
-This vignette utilizes the classic neural tube defects (NTD) dataset, widely used in geographical detector tutorials to demonstrate the use of SURD. It is particularly important to note that the `surd` input in `infoxtr` must consist entirely of discrete data; continuous inputs can be discretized using appropriate methods prior to use.
+Then load the NTD dataset from the `gdverse` package:
 
 ## Air Pollution and Cardiovascular Health in Hong Kong
 
