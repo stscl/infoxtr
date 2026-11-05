@@ -28,77 +28,6 @@ Understanding how causal influences combine and interact is essential for comple
 * **Redundant** contributions — information shared by multiple drivers;
 * **Synergistic** contributions — information only revealed when drivers are considered together.
 
-# Utility Functions
-
-To simplify visualization, a plotting function is provided below, which produces a SURD decomposition plot — a grouped bar chart of **unique (U)**, **synergistic (S)**, and **redundant (R)** components, along with a side panel showing the **information leak**.
-
-```{r util_funs}
-utils_plot_surd = \(surd_list,threshold = 0,style = "shallow") {
-  df = surd_list |> 
-    tibble::as_tibble() |> 
-    dplyr::filter(vars != "InfoLeak") 
-
-  if(threshold > 0){
-    df = dplyr::filter(df, values > threshold)
-  }
-
-  df = df |> 
-    dplyr::mutate(
-      var_nums = stringr::str_extract_all(vars, "(?<=V)\\d+"),
-      nums_joined = sapply(var_nums, \(x) paste(x, collapse = '*","*')),
-      vars_formatted = paste0(types, "[", nums_joined, "]"),
-      type_order = dplyr::case_when(
-        types == "U" ~ 1,  
-        types == "S" ~ 2, 
-        types == "R" ~ 3 
-      ),
-      var_count = lengths(var_nums) 
-    )  |> 
-    dplyr::arrange(type_order, var_count) |> 
-    dplyr::mutate(vars = factor(vars_formatted, levels = unique(vars_formatted)))
-
-  if (style == "shallow") {
-    colors = c(U = "#ec9e9e", S = "#fac58c", R = "#668392", InfoLeak = "#7f7f7f")
-  } else {
-    colors = c(U = "#d62828", S = "#f77f00", R = "#003049", InfoLeak = "gray")
-  }
-
-  p1 = ggplot2::ggplot(df, ggplot2::aes(x = vars, y = values, fill = types)) +
-    ggplot2::geom_col(color = "black", linewidth = 0.15, show.legend = FALSE) +
-    ggplot2::scale_fill_manual(name = NULL, values = colors) +
-    ggplot2::scale_x_discrete(name = NULL, labels = function(x) parse(text = x)) +
-    ggplot2::scale_y_continuous(name = NULL, limits = c(0, 1), expand = c(0, 0),
-                                breaks = c(0, 0.25, 0.5, 0.75, 1),
-                                labels = c("0", "0.25", "0.5", "0.75", "1") ) +
-    ggplot2::theme_bw() +
-    ggplot2::theme(
-      axis.ticks.x = ggplot2::element_blank(),
-      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
-      panel.grid = ggplot2::element_blank(),
-      panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
-    )
-
-  df_leak = dplyr::slice_tail(tibble::as_tibble(surd_list), n = 1)
-  p2 = ggplot2::ggplot(df_leak, ggplot2::aes(x = vars, y = values)) +
-    ggplot2::geom_col(fill = colors[4], color = "black", linewidth = 0.15) +
-    ggplot2::scale_x_discrete(name = NULL, expand = c(0, 0)) +
-    ggplot2::scale_y_continuous(name = NULL, limits = c(0, 1), expand = c(0, 0),
-                                breaks = c(0,1), labels = c(0,1) ) +
-    ggplot2::theme_bw() +
-    ggplot2::theme(
-      axis.ticks.x = ggplot2::element_blank(),
-      panel.grid = ggplot2::element_blank(),
-      panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
-    )
-
-  patchwork::wrap_plots(p1, p2, ncol = 2, widths = c(10,1))
-}
-```
-
-To generate the visualization, please ensure the required packages are installed by running the following code:
-
-
-
 # Example
 
 This vignette utilizes the classic neural tube defects (NTD) dataset, widely used in geographical detector tutorials to demonstrate the use of SURD.
@@ -240,7 +169,74 @@ cowplot::plot_grid(
 ntd_maps
 ```
 
- It is particularly important to note that the `surd` input in `infoxtr` must consist entirely of discrete data; continuous inputs can be discretized using appropriate methods prior to use.
+It is particularly important to note that the `surd` input in `infoxtr` must consist entirely of discrete data; continuous inputs can be discretized using appropriate methods prior to use.
+
+
+
+To simplify visualization, a plotting function is provided below, which produces a SURD decomposition plot — a grouped bar chart of **unique (U)**, **synergistic (S)**, and **redundant (R)** components, along with a side panel showing the **information leak**.
+
+```{r viz_surd_utils}
+utils_plot_surd = \(surd_list,threshold = 0,style = "shallow") {
+  df = surd_list |> 
+    tibble::as_tibble() |> 
+    dplyr::filter(vars != "InfoLeak") 
+
+  if(threshold > 0){
+    df = dplyr::filter(df, values > threshold)
+  }
+
+  df = df |> 
+    dplyr::mutate(
+      var_nums = stringr::str_extract_all(vars, "(?<=V)\\d+"),
+      nums_joined = sapply(var_nums, \(x) paste(x, collapse = '*","*')),
+      vars_formatted = paste0(types, "[", nums_joined, "]"),
+      type_order = dplyr::case_when(
+        types == "U" ~ 1,  
+        types == "S" ~ 2, 
+        types == "R" ~ 3 
+      ),
+      var_count = lengths(var_nums) 
+    )  |> 
+    dplyr::arrange(type_order, var_count) |> 
+    dplyr::mutate(vars = factor(vars_formatted, levels = unique(vars_formatted)))
+
+  if (style == "shallow") {
+    colors = c(U = "#ec9e9e", S = "#fac58c", R = "#668392", InfoLeak = "#7f7f7f")
+  } else {
+    colors = c(U = "#d62828", S = "#f77f00", R = "#003049", InfoLeak = "gray")
+  }
+
+  p1 = ggplot2::ggplot(df, ggplot2::aes(x = vars, y = values, fill = types)) +
+    ggplot2::geom_col(color = "black", linewidth = 0.15, show.legend = FALSE) +
+    ggplot2::scale_fill_manual(name = NULL, values = colors) +
+    ggplot2::scale_x_discrete(name = NULL, labels = function(x) parse(text = x)) +
+    ggplot2::scale_y_continuous(name = NULL, limits = c(0, 1), expand = c(0, 0),
+                                breaks = c(0, 0.25, 0.5, 0.75, 1),
+                                labels = c("0", "0.25", "0.5", "0.75", "1") ) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(
+      axis.ticks.x = ggplot2::element_blank(),
+      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+      panel.grid = ggplot2::element_blank(),
+      panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
+    )
+
+  df_leak = dplyr::slice_tail(tibble::as_tibble(surd_list), n = 1)
+  p2 = ggplot2::ggplot(df_leak, ggplot2::aes(x = vars, y = values)) +
+    ggplot2::geom_col(fill = colors[4], color = "black", linewidth = 0.15) +
+    ggplot2::scale_x_discrete(name = NULL, expand = c(0, 0)) +
+    ggplot2::scale_y_continuous(name = NULL, limits = c(0, 1), expand = c(0, 0),
+                                breaks = c(0,1), labels = c(0,1) ) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(
+      axis.ticks.x = ggplot2::element_blank(),
+      panel.grid = ggplot2::element_blank(),
+      panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
+    )
+
+  patchwork::wrap_plots(p1, p2, ncol = 2, widths = c(10,1))
+}
+```
 
 ## Air Pollution and Cardiovascular Health in Hong Kong
 
