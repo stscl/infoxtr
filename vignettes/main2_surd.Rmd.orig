@@ -107,7 +107,7 @@ if (!requireNamespace("patchwork")) install.packages("patchwork")
 
 # Example Cases
 
-The following sections demonstrate SURD decomposition in different contexts, illustrating its flexibility across temporal and spatial causal analyses.
+This vignette utilizes the classic neural tube defects (NTD) dataset, widely used in geographical detector tutorials to demonstrate the use of SURD. It is particularly important to note that the `surd` input in `infoxtr` must consist entirely of discrete data; continuous inputs can be discretized using appropriate methods prior to use.
 
 ## Air Pollution and Cardiovascular Health in Hong Kong
 
