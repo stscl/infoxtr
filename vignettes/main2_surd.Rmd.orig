@@ -149,7 +149,7 @@ fig4 = watershed |>
     legend.background = ggplot2::element_rect(fill = 'transparent', color = NA)
   )
 
-cowplot::plot_grid(
+ntd_maps = cowplot::plot_grid(
   fig1, fig2, fig3, fig4, nrow = 2, label_fontfamily = "serif",
   labels = paste0("(", letters[1:4], ")"),
   label_fontface = "bold", label_size = 15, label_x = -0.075,
@@ -159,14 +159,7 @@ cowplot::plot_grid(
     pad_x = ggplot2::unit(0.45, "cm"), 
     pad_y = ggplot2::unit(0.75, "cm"),
     style = ggspatial::north_arrow_fancy_orienteering(
-    text_family = "serif", text_face = "bold")) +
-  ggspatial::annotation_scale(
-    location = "tr", 
-    width_hint = 0.15,  
-    height = ggplot2::unit(0.2, "cm"),
-    pad_x = ggplot2::unit(0.25, "cm"), 
-    pad_y = ggplot2::unit(0.25, "cm"),
-    bar_cols = c("black", "white")) -> ntd_maps
+    text_family = "serif", text_face = "bold"))
 ntd_maps
 ```
 
