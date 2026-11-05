@@ -2,7 +2,7 @@
 title: "Synergistic-Unique-Redundant Decomposition of Causality"
 author: "Wenbo Lyu"
 date: |
-  | Last update: 2026-09-30
+  | Last update: 2026-10-31
   | Last run: `r Sys.Date()`
 output: rmarkdown::html_vignette
 vignette: >
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-Understanding how causal influences combine and interact is essential for both temporal and spatial systems. The **Synergistic–Unique–Redundant Decomposition (SURD)** framework provides a principled way to break down total information flow between variables into:
+Understanding how causal influences combine and interact is essential for complex systems. The **Synergistic–Unique–Redundant Decomposition (SURD)** method provides a principled way to break down total information flow between variables into:
 
 * **Unique** contributions — information uniquely provided by one driver;
 * **Redundant** contributions — information shared by multiple drivers;
