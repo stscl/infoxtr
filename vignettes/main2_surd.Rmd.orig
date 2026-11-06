@@ -36,6 +36,8 @@ First, we install the required R packages to run the subsequent code:
 
 ```r
 if (!requireNamespace("dplyr")) install.packages("dplyr")
+if (!requireNamespace("tidyr")) install.packages("tidyr")
+if (!requireNamespace("purrr")) install.packages("purrr")
 if (!requireNamespace("tibble")) install.packages("tibble")
 if (!requireNamespace("stringr")) install.packages("stringr")
 if (!requireNamespace("ggplot2")) install.packages("ggplot2")
@@ -167,13 +169,13 @@ It is particularly important to note that the `surd` function in `infoxtr` can o
 
 For the continuous response variable (NTD incidence rate), we systematically evaluated five discretization methods (standard deviation, equal interval, quantile, natural breaks, and head/tail breaks) combined with class numbers ranging from 3 to 10. The specific discretization scheme that maximized the unique information in the SURD results was selected to process the NTD incidence rate for the final analysis.
 
-```{r }
+```{r opt_params}
 params = tidyr::expand_grid(
   bin = 3:10,
   method = c("sd", "equal", "quantile", "natural", "headtail")
-) 
+)
 
-params =  params |> 
+params = params |> 
   dplyr::mutate(
     unique_causality = purrr::pmap_dbl(params, \(bin, method) {
       g = ntd |> 
