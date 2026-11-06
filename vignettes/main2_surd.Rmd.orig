@@ -273,6 +273,65 @@ The SURD results are shown in the figure below:
 utils_plot_surd(res_surd_ntd)
 ```
 
+
+```{r fig_surd_ntd2,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 2**. SURD decomposition results for the neural tube defects dataset.")}
+sid_df = res_sid_ntd |> 
+  tibble::as_tibble() |> 
+  dplyr::filter(types != "InfoLeak") |>
+  dplyr::mutate(
+    vars_detail = purrr::map2_chr(
+      stringr::str_split(vars, "_"),
+      types,
+      \(split_vars, type) {
+        # Replace V1, V2, V3 with actual variable names
+        replaced_vars = stringr::str_replace_all(
+          split_vars, 
+          c("V1" = "S", "V2" = "E", "V3" = "W")
+          # c("V1" = "soiltype", "V2" = "elevation", "V3" = "watershed")
+        )
+        # Select the correct UTF-8 symbol based on the type
+        symbol = if (type == "R") " \u22C2 " else " \u22C3 "
+        # Collapse the vector into a single string
+        stringr::str_c(replaced_vars, collapse = symbol)
+      }
+    )
+  ) |>
+  dplyr::mutate(types = factor(types, levels = c("U", "S", "R"))) |> 
+  dplyr::arrange(types) |> 
+  dplyr::mutate(vars_detail = factor(vars_detail, levels = unique(vars_detail)))
+
+# sid_df |> 
+#   ggplot2::ggplot(ggplot2::aes(area = values, fill = types, label = vars_detail)) +
+#   treemapify::geom_treemap() +
+#   treemapify::geom_treemap_text(
+#     fontface = "italic", color = "white", 
+#     place = "centre", grow = TRUE)
+
+fig_a1 = ggplot2::ggplot(sid_df, ggplot2::aes(x = vars_detail, y = values, fill = types)) +
+  ggplot2::geom_col(color = "black", linewidth = 0.15, show.legend = FALSE) +
+  ggplot2::scale_fill_manual(
+    name = NULL, 
+    values = c(U = "#ec9e9e", S = "#fac58c", R = "#668392")
+    # values = c(U = "#d62828", S = "#f77f00", R = "#003049")
+  ) +
+  ggplot2::scale_x_discrete(name = NULL) +
+  ggplot2::scale_y_continuous(
+    name = NULL, limits = c(0, 0.45), expand = c(0, 0),
+    breaks = c(0, 0.15, 0.30, 0.45),
+    labels = c("0", "0.15", "0.30", "0.45")
+  ) +
+  ggplot2::labs(title = expression(Delta * I[("\u2022") %->% D] / I(D^"+" ~ ";" ~ X))) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 20) +
+  ggplot2::theme(
+    axis.ticks.x = ggplot2::element_blank(),
+    # axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+    plot.title = ggplot2::element_text(hjust = 0.5, face = "bold", size = 17.5,
+                                       margin = ggplot2::margin(0, 0, 0, 0)),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
+  )
+```
+
 ---
 
 🧩 *See also*:
