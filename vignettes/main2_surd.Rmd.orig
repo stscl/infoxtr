@@ -273,8 +273,9 @@ The SURD results are shown in the figure below:
 utils_plot_surd(res_surd_ntd)
 ```
 
+We can also generate a result plot with the actual variable names, as visualized below:
 
-```{r fig_surd_ntd2,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 2**. SURD decomposition results for the neural tube defects dataset.")}
+```{r fig_surd_ntd2,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 3**. SURD decomposition results for the neural tube defects dataset. D, NTD incidence; W, watershed; E, elevation; S, soil type.")}
 sid_df = res_sid_ntd |> 
   tibble::as_tibble() |> 
   dplyr::filter(types != "InfoLeak") |>
