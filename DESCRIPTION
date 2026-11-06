@@ -31,4 +31,4 @@ Suggests:
     tEDM
 VignetteBuilder: knitr
 Config/roxygen2/markdown: TRUE
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1
