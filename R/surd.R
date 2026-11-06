@@ -84,11 +84,11 @@ methods::setMethod("surd", "SpatRaster", .surd_grid)
 #'
 #' @examples
 #' columbus = sf::read_sf(system.file("case/columbus.gpkg", package="spEDM"))
-#' x = infoxtr::discretize(columbus$hoval, n = 5, method = "equal")
-#' y = infoxtr::discretize(columbus$inc,   n = 5, method = "equal")
-#' z = infoxtr::discretize(columbus$crime, n = 5, method = "equal")
+#' x = infoxtr::discretize(columbus$hoval, n=5, method="equal")
+#' y = infoxtr::discretize(columbus$inc,   n=5, method="equal")
+#' z = infoxtr::discretize(columbus$crime, n=5, method="equal")
 #' 
-#' infoxtr::surd_discrete(cbind(x, y, z), 1, 2:3)
+#' infoxtr::surd_discrete(cbind(x,y,z), 1, 2:3)
 #'
 surd_discrete = \(data, target, agent, max.order = 10, 
                   threads = 1, base = 2.0, normalize = TRUE) {
