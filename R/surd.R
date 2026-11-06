@@ -64,3 +64,10 @@ methods::setMethod("surd", "sf", .surd_lattice)
 
 #' @rdname surd
 methods::setMethod("surd", "SpatRaster", .surd_grid)
+
+surd_discrete = \(data, target, agent, max.order = 10, 
+                  threads = 1, base = 2.0, normalize = TRUE) {
+  mat = .convert2mat(data, type = "disc", contain_type = FALSE)
+  return(RcppDiscSURD(mat[,c(abs(target), abs(agent)), drop = FALSE], 
+                      max.order, threads, base, normalize))
+}
