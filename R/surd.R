@@ -55,7 +55,7 @@
 #'
 #' @examples
 #' columbus = sf::read_sf(system.file("case/columbus.gpkg", package="spEDM"))
-#' infoxtr::surd(columbus, 1, 2:3)
+#' infoxtr::surd(columbus,1,2:3)
 #'
 methods::setMethod("surd", "data.frame", .surd_ts)
 
@@ -88,7 +88,7 @@ methods::setMethod("surd", "SpatRaster", .surd_grid)
 #' y = infoxtr::discretize(columbus$inc,   n=5, method="equal")
 #' z = infoxtr::discretize(columbus$crime, n=5, method="equal")
 #' 
-#' infoxtr::surd_discrete(cbind(x,y,z), 1, 2:3)
+#' infoxtr::surd_discrete(cbind(x,y,z),1,2:3)
 #'
 surd_discrete = \(data, target, agent, max.order = 10, 
                   threads = 1, base = 2.0, normalize = TRUE) {
