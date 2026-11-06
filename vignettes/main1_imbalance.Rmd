@@ -3,7 +3,7 @@ title: "Information Imbalance and Imbalance Gain"
 author: "Wenbo Lyu"
 date: |
   | Last update: 2026-09-30
-  | Last run: 2026-09-30
+  | Last run: 2026-10-31
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{1. Information Imbalance and Imbalance Gain}
@@ -78,7 +78,7 @@ $$
 
 The optimal $\alpha_X$ can then be obtained by minimizing the conditional Information Imbalance over the range of $\alpha_X$. The same formulation can be applied in the reverse direction to assess $Y\rightarrow X\mid Z$.
 
-# Example Cases
+# Example
 
 We illustrate the Imbalance Gain using the *Paramecium*–*Didinium* abundance data from the convergent cross mapping science paper. The data describe the temporal variation in the abundances of *Paramecium* and *Didinium*, providing a simple example for evaluating causal association between two interacting species.
 
