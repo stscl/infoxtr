@@ -269,7 +269,7 @@ utils_plot_surd = \(surd_list,threshold = 0,style = "shallow") {
 
 The SURD results are shown in the figure below:
 
-```{r fig_surd_ntd,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 2**. SURD decomposition results between different air pollutants and cardiovascular diseases.")}
+```{r fig_surd_ntd,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 2**. SURD decomposition results for the neural tube defects dataset.")}
 utils_plot_surd(res_surd_ntd)
 ```
 
