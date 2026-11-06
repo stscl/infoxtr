@@ -16,7 +16,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   message = FALSE,
   comment = "##",
-  fig.path = "man/figures/surd/"
+  fig.path = "man/figures/surd/",
+  dev = "ragg_png"
 )
 ```
 
