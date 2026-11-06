@@ -392,19 +392,17 @@ fig_a2 = ggplot2::ggplot(df_leak, ggplot2::aes(x = vars, y = values)) +
   ggplot2::scale_x_discrete(name = NULL, expand = c(0, 0)) +
   ggplot2::scale_y_continuous(name = NULL, limits = c(0, 1), expand = c(0, 0),
                               breaks = c(0,1), labels = c(0,1) ) +
-  ggplot2::theme_bw(base_family = "serif", base_size = text_size) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 15) +
   ggplot2::theme(
     axis.ticks.x = ggplot2::element_blank(),
     panel.grid = ggplot2::element_blank(),
     panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
   )
-## Error:
-## ! object 'text_size' not found
 
 patchwork::wrap_plots(fig_a1, fig_a2, ncol = 2, widths = c(10,1))
-## Error:
-## ! object 'fig_a2' not found
 ```
+
+![**Figure 3**. SURD decomposition results for the neural tube defects dataset. D, NTD incidence; W, watershed; E, elevation; S, soil type.](../man/figures/surd/fig_surd_ntd2-1.png)
 
 ---
 
