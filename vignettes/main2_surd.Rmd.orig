@@ -202,9 +202,9 @@ res_surd_ntd = ntd |>
 tibble::as_tibble(res_surd_ntd)
 ```
 
-The SURD results are shown in the figure below:
+To simplify visualization, a plotting function is provided below, which produces a SURD decomposition plot — a grouped bar chart of **unique (U)**, **synergistic (S)**, and **redundant (R)** components, along with a side panel showing the **information leak**.
 
-```{r fig_surd_ntd,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 2**. SURD decomposition results between different air pollutants and cardiovascular diseases.")}
+```{r viz_surd_utils}
 utils_plot_surd = \(surd_list,threshold = 0,style = "shallow") {
   df = surd_list |> 
     tibble::as_tibble() |> 
@@ -265,7 +265,11 @@ utils_plot_surd = \(surd_list,threshold = 0,style = "shallow") {
 
   patchwork::wrap_plots(p1, p2, ncol = 2, widths = c(10,1))
 }
+```
 
+The SURD results are shown in the figure below:
+
+```{r fig_surd_ntd,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 2**. SURD decomposition results between different air pollutants and cardiovascular diseases.")}
 utils_plot_surd(res_surd_ntd)
 ```
 
