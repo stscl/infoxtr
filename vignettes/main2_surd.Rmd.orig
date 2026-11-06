@@ -331,6 +331,25 @@ fig_a1 = ggplot2::ggplot(surd_df, ggplot2::aes(x = vars_detail, y = values, fill
     panel.grid = ggplot2::element_blank(),
     panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
   )
+
+df_leak = res_surd_ntd |> 
+    tibble::as_tibble() |> 
+    dplyr::filter(vars == "InfoLeak") |> 
+    dplyr::mutate(vars = "Leak")
+
+fig_a2 = ggplot2::ggplot(df_leak, ggplot2::aes(x = vars, y = values)) +
+  ggplot2::geom_col(fill = colors[4], color = "black", linewidth = 0.15) +
+  ggplot2::scale_x_discrete(name = NULL, expand = c(0, 0)) +
+  ggplot2::scale_y_continuous(name = NULL, limits = c(0, 1), expand = c(0, 0),
+                              breaks = c(0,1), labels = c(0,1) ) +
+  ggplot2::theme_bw(base_family = "serif", base_size = text_size) +
+  ggplot2::theme(
+    axis.ticks.x = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
+  )
+
+
 ```
 
 ---
