@@ -192,6 +192,16 @@ params = params |>
 params
 ```
 
+The optimal parameter combination among the candidates is to discretize the NTD incidence into three classes using the natural breaks method. We run the code to obtain the final results:
+
+```{r res_surd_ntd}
+res_surd_ntd = ntd |> 
+  dplyr::mutate(incidence = infoxtr::discretize(incidence, n = 3, method = "natural")) |> 
+  as.matrix() |> 
+  infoxtr:::RcppDiscSURD(max_order = 3)
+tibble::as_tibble(res_surd_ntd)
+```
+
 To simplify visualization, a plotting function is provided below, which produces a SURD decomposition plot — a grouped bar chart of **unique (U)**, **synergistic (S)**, and **redundant (R)** components, along with a side panel showing the **information leak**.
 
 ```{r viz_surd_utils}
