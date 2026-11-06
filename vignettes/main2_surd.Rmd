@@ -2,8 +2,8 @@
 title: "Synergistic-Unique-Redundant Decomposition of Causality"
 author: "Wenbo Lyu"
 date: |
-  | Last update: 2026-09-30
-  | Last run: 2026-09-30
+  | Last update: 2026-10-31
+  | Last run: 2026-10-31
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{2. Synergistic-Unique-Redundant Decomposition of Causality}
@@ -15,15 +15,237 @@ vignette: >
 
 # Introduction
 
-Understanding how causal influences combine and interact is essential for both temporal and spatial systems. The **Synergistic–Unique–Redundant Decomposition (SURD)** framework provides a principled way to break down total information flow between variables into:
+Understanding how causal influences combine and interact is essential for complex systems. The **Synergistic–Unique–Redundant Decomposition (SURD)** method provides a principled way to break down total information flow between variables into:
 
 * **Unique** contributions — information uniquely provided by one driver;
 * **Redundant** contributions — information shared by multiple drivers;
 * **Synergistic** contributions — information only revealed when drivers are considered together.
 
-This vignette demonstrates how to perform SURD analysis using the `infoxtr` package. We will explore both temporal and spatial cases, showing how `infoxtr` unifies **time-series** and **spatial cross-sectional** causal analysis via consistent interfaces to `data.frame`, `sf`, and `SpatRaster` objects.
+# Example
 
-# Utility Functions
+This vignette utilizes the classic neural tube defects (NTD) dataset, widely used in geographical detector tutorials to demonstrate the use of SURD.
+
+First, we install the required R packages to run the subsequent code:
+
+```r
+if (!requireNamespace("dplyr")) install.packages("dplyr")
+if (!requireNamespace("tidyr")) install.packages("tidyr")
+if (!requireNamespace("purrr")) install.packages("purrr")
+if (!requireNamespace("tibble")) install.packages("tibble")
+if (!requireNamespace("stringr")) install.packages("stringr")
+if (!requireNamespace("ggplot2")) install.packages("ggplot2")
+if (!requireNamespace("viridis")) install.packages("viridis")
+if (!requireNamespace("ggspatial")) install.packages("ggspatial")
+if (!requireNamespace("patchwork")) install.packages("patchwork")
+if (!requireNamespace("gdverse")) install.packages("gdverse")
+if (!requireNamespace("infoxtr")) install.packages("infoxtr")
+```
+
+Then, we load and preprocess the NTD dataset from the `gdverse` package:
+
+
+``` r
+ntdpath = system.file("extdata", "NTDs.gpkg", package = "gdverse")
+sf::st_layers(ntdpath)
+## Driver: GPKG 
+## Available layers:
+##   layer_name geometry_type features fields crs_name
+## 1    disease       Polygon      189      2  unknown
+## 2  watershed       Polygon        9      2  unknown
+## 3  elevation Multi Polygon        7      2  unknown
+## 4   soiltype Multi Polygon        6      2  unknown
+
+disease = sf::read_sf(ntdpath, layer = 'disease')
+soiltype = sf::read_sf(ntdpath, layer = 'soiltype')
+elevation = sf::read_sf(ntdpath, layer = 'elevation')
+watershed = sf::read_sf(ntdpath, layer = 'watershed')
+
+ntd = disease |> 
+  sf::st_centroid() |>
+  sf::st_join(soiltype[,"soiltype"]) |> 
+  sf::st_join(elevation[,"elevation"]) |>
+  sf::st_join(watershed[,"watershed"]) |>
+  dplyr::filter(dplyr::if_all(dplyr::everything(), \(.x) !is.na(.x))) |> 
+  sf::st_drop_geometry() |> 
+  dplyr::select(-SP_ID)
+## Warning: st_centroid assumes attributes are constant over geometries
+ntd
+## # A tibble: 185 × 4
+##    incidence soiltype elevation watershed
+##        <dbl>    <int>     <int>     <int>
+##  1      5.94        5         5         5
+##  2      5.87        4         5         5
+##  3      5.88        5         5         5
+##  4      5.98        5         5         5
+##  5      5.96        1         5         5
+##  6      5.66        4         5         5
+##  7      5.74        4         5         5
+##  8      5.88        4         5         5
+##  9      6.1         4         5         5
+## 10      5.89        4         5         5
+## # ℹ 175 more rows
+```
+
+The NTD dataset can be visualized as follows:
+
+
+``` r
+fig1 = ggplot2::ggplot(data = disease) +
+  ggplot2::geom_sf(ggplot2::aes(fill = incidence), lwd = .1, color = 'grey') +
+  viridis::scale_fill_viridis(option="mako", direction = -1) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 12.5) +
+  ggplot2::theme(
+    axis.text = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    axis.title = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_blank(),
+    legend.direction = "horizontal",
+    legend.position = 'inside',
+    legend.justification = c(-0.05, -0.095),
+    legend.background = ggplot2::element_rect(fill = 'transparent', color = NA)
+  )
+fig2 = soiltype |> 
+  dplyr::mutate(soiltype = factor(soiltype)) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_sf(ggplot2::aes(fill = soiltype), lwd = .1, color = 'grey') +
+  ggplot2::scale_fill_manual(
+    values = c("#00bfbf", "#7aff00", "#ffc100",
+               "#cf8035", "#c0abab")
+  ) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 12.5) +
+  ggplot2::theme(
+    axis.text = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    axis.title = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_blank(),
+    legend.direction = "horizontal",
+    legend.position = 'inside',
+    legend.justification = c(-0.05, -0.05),
+    legend.background = ggplot2::element_rect(fill = 'transparent', color = NA)
+  )
+fig3 = elevation |> 
+  dplyr::mutate(elevation = factor(elevation)) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_sf(ggplot2::aes(fill = elevation), lwd = .1, color = 'grey') +
+  ggplot2::scale_fill_manual(
+    values = c("#94ab84", "#b2c38f", "#d7d9a7", "#e6ca94",
+               "#c5a582", "#a4856c", "#a05d42", "#c0abab")
+  ) +
+  ggplot2::guides(fill = ggplot2::guide_legend(byrow = TRUE)) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 12.5) +
+  ggplot2::theme(
+    axis.text = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    axis.title = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_blank(),
+    legend.direction = "horizontal",
+    legend.position = 'inside',
+    legend.justification = c(-0.05, -0.245),
+    legend.background = ggplot2::element_rect(fill = 'transparent', color = NA)
+  )
+fig4 = watershed |> 
+  dplyr::mutate(watershed = factor(watershed)) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_sf(ggplot2::aes(fill = watershed), lwd = .1, color = 'grey') +
+  ggplot2::scale_fill_manual(
+    values = c("#bce6ff", "#55d7ff", "#34bfff", "#17a0fc", "#176ef2",
+               "#0026de", "#0010cd", "#1505af", "#1a0089")
+  ) +
+  ggplot2::guides(fill = ggplot2::guide_legend(byrow = TRUE)) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 12.5) +
+  ggplot2::theme(
+    axis.text = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    axis.title = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_blank(),
+    legend.direction = "horizontal",
+    legend.position = 'inside',
+    legend.justification = c(-0.05, -0.245),
+    legend.background = ggplot2::element_rect(fill = 'transparent', color = NA)
+  )
+
+ntd_maps = cowplot::plot_grid(
+  fig1, fig2, fig3, fig4, nrow = 2, label_fontfamily = "serif",
+  labels = paste0("(", letters[1:4], ")"),
+  label_fontface = "bold", label_size = 15, label_x = -0.075,
+  hjust = -1.5, align = "hv") +
+  ggspatial::annotation_north_arrow(
+    location = "tr",
+    pad_x = ggplot2::unit(0.45, "cm"), 
+    pad_y = ggplot2::unit(0.75, "cm"),
+    style = ggspatial::north_arrow_fancy_orienteering(
+    text_family = "serif", text_face = "bold"))
+ntd_maps
+```
+
+![**Figure 1**. Spatial distribution of variables in the neural tube defects dataset. **a**, NTD incidence; **b**, soil type; **c**, elevation; **d**, watershed.](../man/figures/surd/ntd_map-1.png)
+
+It is particularly important to note that the `surd` function in `infoxtr` can only handle entirely discrete data; continuous inputs can be discretized using appropriate methods prior to use.
+
+For the continuous response variable (NTD incidence rate), we systematically evaluated five discretization methods (standard deviation, equal interval, quantile, natural breaks, and head/tail breaks) combined with class numbers ranging from 3 to 10. The specific discretization scheme that maximized the unique information in the SURD results was selected to process the NTD incidence rate for the final analysis.
+
+
+``` r
+params = tidyr::expand_grid(
+  bin = 3:10,
+  method = c("sd", "equal", "quantile", "natural", "headtail")
+)
+
+params = params |> 
+  dplyr::mutate(
+    unique_causality = purrr::pmap_dbl(params, \(bin, method) {
+      g = ntd |> 
+        dplyr::mutate(incidence = infoxtr::discretize(incidence, n = bin, method = method)) |> 
+        as.matrix() |> 
+        infoxtr:::RcppDiscSURD(max_order = 3)
+      
+      if (length(which(g$types == "U")) == 0)
+        return(0.0)
+      else 
+        return(sum(g$values[which(g$types == "U")]))
+  })) |> 
+  dplyr::arrange(dplyr::desc(unique_causality))
+params
+## # A tibble: 40 × 3
+##      bin method   unique_causality
+##    <int> <chr>               <dbl>
+##  1     3 natural             0.168
+##  2     3 headtail            0.154
+##  3     4 headtail            0.154
+##  4     5 headtail            0.154
+##  5     6 headtail            0.154
+##  6     7 headtail            0.154
+##  7     8 headtail            0.154
+##  8     9 headtail            0.154
+##  9    10 headtail            0.154
+## 10     3 equal               0.151
+## # ℹ 30 more rows
+```
+
+The optimal parameter combination among the candidates is to discretize the NTD incidence into three classes using the natural breaks method. We run the code to obtain the final results:
+
+
+``` r
+res_surd_ntd = ntd |> 
+  dplyr::mutate(incidence = infoxtr::discretize(incidence, n = 3, method = "natural")) |> 
+  as.matrix() |> 
+  infoxtr:::RcppDiscSURD(max_order = 3)
+tibble::as_tibble(res_surd_ntd)
+## # A tibble: 7 × 3
+##   vars     types    values
+##   <chr>    <chr>     <dbl>
+## 1 V3       U        0.168 
+## 2 V1_V2_V3 R        0.258 
+## 3 V1_V2    S        0.0271
+## 4 V1_V3    S        0.0536
+## 5 V2_V3    S        0.0692
+## 6 V1_V2_V3 S        0.0999
+## 7 InfoLeak InfoLeak 0.378
+```
 
 To simplify visualization, a plotting function is provided below, which produces a SURD decomposition plot — a grouped bar chart of **unique (U)**, **synergistic (S)**, and **redundant (R)** components, along with a side panel showing the **information leak**.
 
@@ -91,209 +313,98 @@ utils_plot_surd = \(surd_list,threshold = 0,style = "shallow") {
 }
 ```
 
-To generate the visualization, please ensure the required packages are installed by running the following code:
-
-```r
-if (!requireNamespace("dplyr")) install.packages("dplyr")
-if (!requireNamespace("tibble")) install.packages("tibble")
-if (!requireNamespace("stringr")) install.packages("stringr")
-if (!requireNamespace("ggplot2")) install.packages("ggplot2")
-if (!requireNamespace("patchwork")) install.packages("patchwork")
-```
-
-# Example Cases
-
-The following sections demonstrate SURD decomposition in different contexts, illustrating its flexibility across temporal and spatial causal analyses.
-
-## Air Pollution and Cardiovascular Health in Hong Kong
-
-
-``` r
-cvd = readr::read_csv(system.file("case/cvd.csv",package = "tEDM"))
-head(cvd)
-## # A tibble: 6 × 5
-##     cvd   rsp   no2   so2    o3
-##   <dbl> <dbl> <dbl> <dbl> <dbl>
-## 1   214  73.7  74.5  19.1 17.4 
-## 2   203  77.6  80.9  18.8 39.4 
-## 3   202  64.8  67.1  13.8 56.4 
-## 4   182  68.8  74.7  30.8  5.6 
-## 5   181  49.4  62.3  23.1  3.6 
-## 6   129  67.4  63.6  17.4  6.73
-```
-
-
-``` r
-cvd_long = cvd |>
-  tibble::rowid_to_column("id") |>
-  tidyr::pivot_longer(cols = -id,
-                      names_to = "variable", values_to = "value")
-
-fig_cvds_ts = ggplot2::ggplot(cvd_long, ggplot2::aes(x = id, y = value, color = variable)) +
-  ggplot2::geom_line(linewidth = 0.5) +
-  ggplot2::labs(x = "Days (from 1995-3 to 1997-11)", y = "Concentrations or \nNO. of CVD admissions", color = "") +
-  ggplot2::theme_bw() +
-  ggplot2::theme(legend.direction = "horizontal",
-                 legend.position = "inside",
-                 legend.justification = c("center", "top"),
-                 legend.background = ggplot2::element_rect(fill = "transparent", color = NA))
-fig_cvds_ts
-```
-
-![**Figure 1**. Time series of air pollutants and confirmed CVD cases in Hong Kong from March 1995 to November 1997.](../man/figures/surd/fig_cvds_ts-1.png)
-
-To investigate the causal influences of air pollutants on the incidence of cardiovascular diseases, we performed SURD analysis using a time lag step `3` and `10` discretization bins.
-
-
-``` r
-res_cvds = infoxtr::surd(cvd, 1, 2:5,
-                         lag = 15, bin = 10, threads = 6)
-tibble::as_tibble(res_cvds)
-## # A tibble: 20 × 3
-##    vars        types      values
-##    <chr>       <chr>       <dbl>
-##  1 V1          U        0.00220 
-##  2 V2          U        0.0156  
-##  3 V3          U        0.00253 
-##  4 V1_V2       R        0.00347 
-##  5 V1_V4       R        0.000714
-##  6 V1_V2_V3    R        0.00508 
-##  7 V1_V2_V4    R        0.00995 
-##  8 V1_V2_V3_V4 R        0.0232  
-##  9 V1_V2       S        0.0206  
-## 10 V1_V3       S        0.0225  
-## 11 V1_V4       S        0.0453  
-## 12 V2_V3       S        0.0257  
-## 13 V2_V4       S        0.0353  
-## 14 V3_V4       S        0.0367  
-## 15 V1_V2_V3    S        0.0352  
-## 16 V1_V2_V4    S        0.105   
-## 17 V1_V3_V4    S        0.151   
-## 18 V2_V3_V4    S        0.0468  
-## 19 V1_V2_V3_V4 S        0.406   
-## 20 InfoLeak    InfoLeak 0.530
-```
-
 The SURD results are shown in the figure below:
 
 
 ``` r
-utils_plot_surd(res_cvds)
+utils_plot_surd(res_surd_ntd)
 ```
 
-![**Figure 2**. SURD decomposition results between different air pollutants and cardiovascular diseases.](../man/figures/surd/fig_surd_cvds-1.png)
+![**Figure 2**. SURD decomposition results for the neural tube defects dataset.](../man/figures/surd/fig_surd_ntd-1.png)
 
-## Population Density and Its Drivers in Mainland China
+We can also generate a result plot with the actual variable names, as visualized below:
 
 
 ``` r
-popd_nb = spdep::read.gal(system.file("case/popd_nb.gal",package = "spEDM"))
-## Warning in spdep::read.gal(system.file("case/popd_nb.gal", package = "spEDM")):
-## neighbour object has 4 sub-graphs
-popd = readr::read_csv(system.file("case/popd.csv",package = "spEDM"))
-popd_sf = sf::st_as_sf(popd, coords = c("lon","lat"), crs = 4326)
-popd_sf
-## Simple feature collection with 2806 features and 5 fields
-## Geometry type: POINT
-## Dimension:     XY
-## Bounding box:  xmin: 74.9055 ymin: 18.2698 xmax: 134.269 ymax: 52.9346
-## Geodetic CRS:  WGS 84
-## # A tibble: 2,806 × 6
-##     popd  elev   tem   pre slope          geometry
-##  * <dbl> <dbl> <dbl> <dbl> <dbl>       <POINT [°]>
-##  1  780.     8  17.4 1528. 0.452 (116.912 30.4879)
-##  2  395.    48  17.2 1487. 0.842 (116.755 30.5877)
-##  3  261.    49  16.0 1456. 3.56  (116.541 30.7548)
-##  4  258.    23  17.4 1555. 0.932  (116.241 30.104)
-##  5  211.   101  16.3 1494. 3.34   (116.173 30.495)
-##  6  386.    10  16.6 1382. 1.65  (116.935 30.9839)
-##  7  350.    23  17.5 1569. 0.346 (116.677 30.2412)
-##  8  470.    22  17.1 1493. 1.88  (117.066 30.6514)
-##  9 1226.    11  17.4 1526. 0.208 (117.171 30.5558)
-## 10  137.   598  13.9 1458. 5.92  (116.208 30.8983)
-## # ℹ 2,796 more rows
+surd_df = res_surd_ntd |> 
+  tibble::as_tibble() |> 
+  dplyr::filter(types != "InfoLeak") |>
+  dplyr::mutate(
+    vars_detail = purrr::map2_chr(
+      stringr::str_split(vars, "_"),
+      types,
+      \(split_vars, type) {
+        # Replace V1, V2, V3 with actual variable names
+        replaced_vars = stringr::str_replace_all(
+          split_vars, 
+          c("V1" = "S", "V2" = "E", "V3" = "W")
+          # c("V1" = "soiltype", "V2" = "elevation", "V3" = "watershed")
+        )
+        # Select the correct UTF-8 symbol based on the type
+        symbol = if (type == "R") " \u22C2 " else " \u22C3 "
+        # Collapse the vector into a single string
+        stringr::str_c(replaced_vars, collapse = symbol)
+      }
+    )
+  ) |>
+  dplyr::mutate(types = factor(types, levels = c("U", "S", "R"))) |> 
+  dplyr::arrange(types) |> 
+  dplyr::mutate(vars_detail = factor(vars_detail, levels = unique(vars_detail)))
+
+# surd_df |> 
+#   ggplot2::ggplot(ggplot2::aes(area = values, fill = types, label = vars_detail)) +
+#   treemapify::geom_treemap() +
+#   treemapify::geom_treemap_text(
+#     fontface = "italic", color = "white", 
+#     place = "centre", grow = TRUE)
+
+fig_a1 = ggplot2::ggplot(surd_df, ggplot2::aes(x = vars_detail, y = values, fill = types)) +
+  ggplot2::geom_col(color = "black", linewidth = 0.15, show.legend = FALSE) +
+  ggplot2::scale_fill_manual(
+    name = NULL, 
+    values = c(U = "#ec9e9e", S = "#fac58c", R = "#668392")
+    # values = c(U = "#d62828", S = "#f77f00", R = "#003049")
+  ) +
+  ggplot2::scale_x_discrete(name = NULL) +
+  ggplot2::scale_y_continuous(
+    name = NULL, limits = c(0, 0.45), expand = c(0, 0),
+    breaks = c(0, 0.15, 0.30, 0.45),
+    labels = c("0", "0.15", "0.30", "0.45")
+  ) +
+  ggplot2::labs(title = expression(Delta * I[("\u2022") %->% D] / I(D^"+" ~ ";" ~ X))) +
+  ggplot2::theme_bw(base_family = "serif", base_size = 20) +
+  ggplot2::theme(
+    axis.ticks.x = ggplot2::element_blank(),
+    # axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+    plot.title = ggplot2::element_text(hjust = 0.5, face = "bold", size = 17.5,
+                                       margin = ggplot2::margin(0, 0, 0, 0)),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
+  )
+
+df_leak = res_surd_ntd |> 
+    tibble::as_tibble() |> 
+    dplyr::filter(vars == "InfoLeak") |> 
+    dplyr::mutate(vars = "Leak")
+
+fig_a2 = ggplot2::ggplot(df_leak, ggplot2::aes(x = vars, y = values)) +
+  ggplot2::geom_col(fill = "#7f7f7f", color = "black", linewidth = 0.15) +
+  ggplot2::scale_x_discrete(name = NULL, expand = c(0, 0)) +
+  ggplot2::scale_y_continuous(name = NULL, limits = c(0, 1), expand = c(0, 0),
+                              breaks = c(0,1), labels = c(0,1) ) +
+  ggplot2::theme_bw(base_family = "serif", base_size = text_size) +
+  ggplot2::theme(
+    axis.ticks.x = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
+  )
+## Error:
+## ! object 'text_size' not found
+
+patchwork::wrap_plots(fig_a1, fig_a2, ncol = 2, widths = c(10,1))
+## Error:
+## ! object 'fig_a2' not found
 ```
-
-
-``` r
-res_popd = infoxtr::surd(popd_sf, 1, 2:5,
-                         lag = 3, bin = 10, nb = popd_nb, threads = 6)
-tibble::as_tibble(res_popd)
-## # A tibble: 19 × 3
-##    vars        types     values
-##    <chr>       <chr>      <dbl>
-##  1 V1          U        0.00453
-##  2 V3          U        0.0390 
-##  3 V4          U        0.00349
-##  4 V1_V3       R        0.00872
-##  5 V3_V4       R        0.00269
-##  6 V1_V2_V3    R        0.00546
-##  7 V1_V2_V3_V4 R        0.110  
-##  8 V1_V2       S        0.0361 
-##  9 V1_V3       S        0.0461 
-## 10 V1_V4       S        0.0866 
-## 11 V2_V3       S        0.0458 
-## 12 V2_V4       S        0.0749 
-## 13 V3_V4       S        0.0858 
-## 14 V1_V2_V3    S        0.0376 
-## 15 V1_V2_V4    S        0.0584 
-## 16 V1_V3_V4    S        0.0453 
-## 17 V2_V3_V4    S        0.154  
-## 18 V1_V2_V3_V4 S        0.107  
-## 19 InfoLeak    InfoLeak 0.642
-```
-
-
-``` r
-utils_plot_surd(res_popd)
-```
-
-![**Figure 3**. SURD decomposition results between population density and its Drivers.](../man/figures/surd/fig_surd_popd-1.png)
-
-## Influence of Climatic and Topographic Factors on Net Primary Productivity (NPP) in Mainland China
-
-
-``` r
-npp = terra::rast(system.file("case/npp.tif", package = "spEDM"))
-npp
-## class       : SpatRaster
-## size        : 404, 483, 5  (nrow, ncol, nlyr)
-## resolution  : 10000, 10000  (x, y)
-## extent      : -2625763, 2204237, 1877078, 5917078  (xmin, xmax, ymin, ymax)
-## coord. ref. : CGCS2000_Albers
-## source      : npp.tif
-## names       :          npp,          pre,        tem,        elev,       hfp
-## min values  :          164,   384.340942, -47.819405, -122.200386,  0.033904
-## max values  : 16606.333984, 23878.355469, 263.693787, 5350.490234, 44.903122
-```
-
-
-``` r
-res_npp = infoxtr::surd(npp, 1, 2:5,
-                        lag = 2, bin = 10, threads = 6)
-tibble::as_tibble(res_npp)
-## # A tibble: 22 × 3
-##    vars        types    values
-##    <chr>       <chr>     <dbl>
-##  1 V1          U     0.0777   
-##  2 V2          U     0.000234 
-##  3 V3          U     0.0000114
-##  4 V4          U     0.0164   
-##  5 V1_V2       R     0.0948   
-##  6 V1_V3       R     0.000828 
-##  7 V1_V4       R     0.00514  
-##  8 V1_V2_V3    R     0.0137   
-##  9 V1_V2_V4    R     0.0149   
-## 10 V1_V2_V3_V4 R     0.565    
-## # ℹ 12 more rows
-```
-
-
-``` r
-utils_plot_surd(res_npp)
-```
-
-![**Figure 4**. SURD decomposition results between climatic and topographic factors and npp.](../man/figures/surd/fig_surd_npp-1.png)
 
 ---
 
