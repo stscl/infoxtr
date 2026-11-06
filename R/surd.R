@@ -79,6 +79,7 @@ methods::setMethod("surd", "SpatRaster", .surd_grid)
 #' }
 #'
 #' @export
+#' @rdname surd
 #' @references
 #' Martinez-Sanchez, A., Arranz, G., Lozano-Duran, A., 2024. Decomposing causality into its synergistic, unique, and redundant components. Nature Communications 15.
 #'

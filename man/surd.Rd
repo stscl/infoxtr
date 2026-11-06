@@ -5,6 +5,7 @@
 \alias{surd,data.frame-method}
 \alias{surd,sf-method}
 \alias{surd,SpatRaster-method}
+\alias{surd_discrete}
 \title{Synergistic-Unique-Redundant Decomposition}
 \usage{
 \S4method{surd}{data.frame}(
@@ -46,6 +47,16 @@
   base = 2,
   normalize = TRUE
 )
+
+surd_discrete(
+  data,
+  target,
+  agent,
+  max.order = 10,
+  threads = 1,
+  base = 2,
+  normalize = TRUE
+)
 }
 \arguments{
 \item{data}{Observation data.}
@@ -80,9 +91,18 @@ A list.
 \item{types}{Character vector indicating the information type of each component.}
 \item{values}{Numeric vector giving the magnitude of each information component.}
 }
+
+A list.
+\describe{
+\item{vars}{Character vector indicating the variable combination associated with each information component.}
+\item{types}{Character vector indicating the information type of each component.}
+\item{values}{Numeric vector giving the magnitude of each information component.}
+}
 }
 \description{
 Synergistic-Unique-Redundant Decomposition
+
+Synergistic-Unique-Redundant Decomposition for Discrete Input
 }
 \note{
 \code{surd} only supports numeric input data. Both \code{bin} and \code{method}
@@ -92,12 +112,23 @@ support variable-specific settings using R-style recycling:
 \item length 2: first for the target, second for all agents
 \item length > 2: first for the target, remaining values are recycled across agents
 }
+
+\code{surd_discrete} only supports discrete input data.
 }
 \examples{
 columbus = sf::read_sf(system.file("case/columbus.gpkg", package="spEDM"))
-infoxtr::surd(columbus, 1, 2:3)
+infoxtr::surd(columbus,1,2:3)
+
+columbus = sf::read_sf(system.file("case/columbus.gpkg", package="spEDM"))
+x = infoxtr::discretize(columbus$hoval, n=5, method="equal")
+y = infoxtr::discretize(columbus$inc,   n=5, method="equal")
+z = infoxtr::discretize(columbus$crime, n=5, method="equal")
+
+infoxtr::surd_discrete(cbind(x,y,z),1,2:3)
 
 }
 \references{
+Martinez-Sanchez, A., Arranz, G., Lozano-Duran, A., 2024. Decomposing causality into its synergistic, unique, and redundant components. Nature Communications 15.
+
 Martinez-Sanchez, A., Arranz, G., Lozano-Duran, A., 2024. Decomposing causality into its synergistic, unique, and redundant components. Nature Communications 15.
 }
