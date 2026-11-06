@@ -65,9 +65,34 @@ methods::setMethod("surd", "sf", .surd_lattice)
 #' @rdname surd
 methods::setMethod("surd", "SpatRaster", .surd_grid)
 
+#' Synergistic-Unique-Redundant Decomposition for Discrete Input
+#' 
+#' @note `surd_discrete` only supports discrete input data.
+#'
+#' @inheritParams surd
+#'
+#' @return A list.
+#' \describe{
+#'   \item{vars}{Character vector indicating the variable combination associated with each information component.}
+#'   \item{types}{Character vector indicating the information type of each component.}
+#'   \item{values}{Numeric vector giving the magnitude of each information component.}
+#' }
+#'
+#' @export
+#' @references
+#' Martinez-Sanchez, A., Arranz, G., Lozano-Duran, A., 2024. Decomposing causality into its synergistic, unique, and redundant components. Nature Communications 15.
+#'
+#' @examples
+#' columbus = sf::read_sf(system.file("case/columbus.gpkg", package="spEDM"))
+#' x = infoxtr::discretize(columbus$hoval, n = 5, method = "equal")
+#' y = infoxtr::discretize(columbus$inc,   n = 5, method = "equal")
+#' z = infoxtr::discretize(columbus$crime, n = 5, method = "equal")
+#' 
+#' infoxtr::surd_discrete(cbind(x, y, z), 1, 2:3)
+#'
 surd_discrete = \(data, target, agent, max.order = 10, 
                   threads = 1, base = 2.0, normalize = TRUE) {
   mat = .convert2mat(data, type = "disc", contain_type = FALSE)
-  return(RcppDiscSURD(mat[,c(abs(target), abs(agent)), drop = FALSE], 
+  return(RcppDiscSURD(mat[, c(abs(target), abs(agent)), drop = FALSE], 
                       max.order, threads, base, normalize))
 }
