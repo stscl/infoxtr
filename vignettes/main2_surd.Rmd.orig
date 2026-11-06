@@ -349,7 +349,7 @@ fig_a2 = ggplot2::ggplot(df_leak, ggplot2::aes(x = vars, y = values)) +
     panel.border = ggplot2::element_rect(color = "black", linewidth = 2)
   )
 
-
+patchwork::wrap_plots(fig_a1, fig_a2, ncol = 2, widths = c(10,1))
 ```
 
 ---
