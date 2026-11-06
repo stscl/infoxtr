@@ -276,7 +276,7 @@ utils_plot_surd(res_surd_ntd)
 We can also generate a result plot with the actual variable names, as visualized below:
 
 ```{r fig_surd_ntd2,fig.width=6.5,fig.height=2.5,fig.dpi=300,fig.cap=knitr::asis_output("**Figure 3**. SURD decomposition results for the neural tube defects dataset. D, NTD incidence; W, watershed; E, elevation; S, soil type.")}
-sid_df = res_sid_ntd |> 
+surd_df = res_surd_ntd |> 
   tibble::as_tibble() |> 
   dplyr::filter(types != "InfoLeak") |>
   dplyr::mutate(
@@ -301,14 +301,14 @@ sid_df = res_sid_ntd |>
   dplyr::arrange(types) |> 
   dplyr::mutate(vars_detail = factor(vars_detail, levels = unique(vars_detail)))
 
-# sid_df |> 
+# surd_df |> 
 #   ggplot2::ggplot(ggplot2::aes(area = values, fill = types, label = vars_detail)) +
 #   treemapify::geom_treemap() +
 #   treemapify::geom_treemap_text(
 #     fontface = "italic", color = "white", 
 #     place = "centre", grow = TRUE)
 
-fig_a1 = ggplot2::ggplot(sid_df, ggplot2::aes(x = vars_detail, y = values, fill = types)) +
+fig_a1 = ggplot2::ggplot(surd_df, ggplot2::aes(x = vars_detail, y = values, fill = types)) +
   ggplot2::geom_col(color = "black", linewidth = 0.15, show.legend = FALSE) +
   ggplot2::scale_fill_manual(
     name = NULL, 
