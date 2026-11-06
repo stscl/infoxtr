@@ -101,8 +101,6 @@ A list.
 }
 \description{
 Synergistic-Unique-Redundant Decomposition
-
-Synergistic-Unique-Redundant Decomposition for Discrete Input
 }
 \note{
 \code{surd} only supports numeric input data. Both \code{bin} and \code{method}
@@ -123,12 +121,9 @@ columbus = sf::read_sf(system.file("case/columbus.gpkg", package="spEDM"))
 x = infoxtr::discretize(columbus$hoval, n=5, method="equal")
 y = infoxtr::discretize(columbus$inc,   n=5, method="equal")
 z = infoxtr::discretize(columbus$crime, n=5, method="equal")
-
 infoxtr::surd_discrete(cbind(x,y,z),1,2:3)
 
 }
 \references{
-Martinez-Sanchez, A., Arranz, G., Lozano-Duran, A., 2024. Decomposing causality into its synergistic, unique, and redundant components. Nature Communications 15.
-
 Martinez-Sanchez, A., Arranz, G., Lozano-Duran, A., 2024. Decomposing causality into its synergistic, unique, and redundant components. Nature Communications 15.
 }
