@@ -6,7 +6,7 @@
 #include <algorithm>
 #include "infoxtr.h"
 
-// Wrapper function to preform synergistic–unique–redundant decomposition
+// Wrapper function to preform syne–rgisticunique–redundant decomposition
 // [[Rcpp::export(rng = false)]]
 Rcpp::List RcppSURD(const Rcpp::NumericMatrix& mat,
                     const Rcpp::IntegerVector& target,
@@ -205,6 +205,94 @@ Rcpp::List RcppSURD(const Rcpp::NumericMatrix& mat,
 
     infoxtr::surd::SURDRes res = infoxtr::surd::surd(
         pm, 
+        static_cast<size_t>(std::abs(max_order)),
+        static_cast<size_t>(std::abs(threads)), 
+        std::abs(base), normalize);
+
+    std::vector<std::string> names;
+    std::vector<std::string> types;
+    std::vector<double> values;
+
+    auto make_name = [](const std::vector<size_t>& vars)
+    {
+        std::string nm;
+
+        for (size_t j = 0; j < vars.size(); ++j)
+        {
+            if (j > 0)
+                nm += "_";
+
+            nm += "V";
+            nm += std::to_string(vars[j]);
+        }
+
+        return nm;
+    };
+
+    /**************************************************
+     * Unique
+     **************************************************/
+
+    for (size_t i = 0; i < res.unique_vals.size(); ++i)
+    {
+        names.push_back(make_name(res.unique_vars[i]));
+        types.push_back("U");
+        values.push_back(res.unique_vals[i]);
+    }
+
+    /**************************************************
+     * Redundant
+     **************************************************/
+
+    for (size_t i = 0; i < res.redundant_vals.size(); ++i)
+    {
+        names.push_back(make_name(res.redundant_vars[i]));
+        types.push_back("R");
+        values.push_back(res.redundant_vals[i]);
+    }
+
+    /**************************************************
+     * Synergy
+     **************************************************/
+
+    for (size_t i = 0; i < res.synergy_vals.size(); ++i)
+    {
+        names.push_back(make_name(res.synergy_vars[i]));
+        types.push_back("S");
+        values.push_back(res.synergy_vals[i]);
+    }
+
+    /**************************************************
+     * InfoLeak
+     **************************************************/
+
+    names.push_back("InfoLeak");
+    types.push_back("InfoLeak");
+    values.push_back(res.info_leak);
+
+    Rcpp::CharacterVector names_r(names.begin(), names.end());
+    Rcpp::CharacterVector types_r(types.begin(), types.end());
+    Rcpp::NumericVector values_r(values.begin(), values.end());
+
+    return Rcpp::List::create(
+        Rcpp::Named("vars")  = names_r,
+        Rcpp::Named("types")  = types_r,
+        Rcpp::Named("values") = values_r
+    );
+}
+
+// Wrapper function to preform syne–rgisticunique–redundant decomposition for discrete data
+// [[Rcpp::export(rng = false)]]
+Rcpp::List RcppDiscSURD(SEXP mat,
+                        int max_order = 3,
+                        int threads = 1,
+                        double base = 2.0,
+                        bool normalize = true)
+{
+    infoxtr::surd::DiscMat m = infoxtr::convert::pat_r2std(mat, false);
+
+    infoxtr::surd::SURDRes res = infoxtr::surd::surd(
+        m, 
         static_cast<size_t>(std::abs(max_order)),
         static_cast<size_t>(std::abs(threads)), 
         std::abs(base), normalize);
