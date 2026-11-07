@@ -43,6 +43,7 @@ reference:
   - te
   - imbalance_gain
   - surd
+  - surd_discrete
 
 - title: Knockoff-based interaction testing
   contents:
