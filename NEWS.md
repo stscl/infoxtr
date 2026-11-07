@@ -1,5 +1,9 @@
 # infoxtr 0.4
 
+### new
+
+* Add `surd_discrete()` for SURD using pre-discretized state data (#107).
+
 # infoxtr 0.3
 
 ### new
