@@ -6,7 +6,7 @@
 #include <algorithm>
 #include "infoxtr.h"
 
-// Wrapper function to preform synergisticunique–redundant decomposition
+// Wrapper function to preform synergistic-unique–redundant decomposition
 // [[Rcpp::export(rng = false)]]
 Rcpp::List RcppSURD(const Rcpp::NumericMatrix& mat,
                     const Rcpp::IntegerVector& target,
@@ -281,7 +281,7 @@ Rcpp::List RcppSURD(const Rcpp::NumericMatrix& mat,
     );
 }
 
-// Wrapper function to preform synergisticunique–redundant decomposition for discrete data
+// Wrapper function to preform synergistic-unique–redundant decomposition for discrete data
 // [[Rcpp::export(rng = false)]]
 Rcpp::List RcppDiscSURD(SEXP mat,
                         int max_order = 3,
