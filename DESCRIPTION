@@ -22,7 +22,9 @@ Imports:
     sf,
     terra
 Suggests: 
+    gdverse,
     knitr,
+    pc,
     Rcpp,
     RcppThread,
     readr,
