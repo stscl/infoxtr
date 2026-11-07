@@ -91,13 +91,6 @@ A list.
 \item{types}{Character vector indicating the information type of each component.}
 \item{values}{Numeric vector giving the magnitude of each information component.}
 }
-
-A list.
-\describe{
-\item{vars}{Character vector indicating the variable combination associated with each information component.}
-\item{types}{Character vector indicating the information type of each component.}
-\item{values}{Numeric vector giving the magnitude of each information component.}
-}
 }
 \description{
 Synergistic-Unique-Redundant Decomposition
