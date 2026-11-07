@@ -67,15 +67,6 @@ methods::setMethod("surd", "SpatRaster", .surd_grid)
 
 #' @note `surd_discrete` only supports discrete input data.
 #'
-#' @inheritParams surd
-#'
-#' @return A list.
-#' \describe{
-#'   \item{vars}{Character vector indicating the variable combination associated with each information component.}
-#'   \item{types}{Character vector indicating the information type of each component.}
-#'   \item{values}{Numeric vector giving the magnitude of each information component.}
-#' }
-#'
 #' @export
 #' @rdname surd
 #'
