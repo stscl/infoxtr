@@ -6,10 +6,10 @@
 #' @param conds Integer vector of column indices for the conditioning variables.
 #' @param knockoff Knockoff realizations for the `agent` variable. Each column is 
 #'   a Monte Carlo realization generated using the `agent` and `conds` variables.
-#' @param null_knockoff (optional) Knockoff realizations generated under the
-#'   null setting where all variables are jointly used to construct knockoffs.
-#'   Each column represents one Monte Carlo sample. If `contain_null = FALSE`,
-#'   this argument can be `NULL`.
+#' @param null_knockoff (optional) Knockoff realizations generated under the null 
+#'   setting where all variables (`target`, `agent`, `conds`) are jointly used to 
+#'   construct knockoffs. Each column represents one Monte Carlo realization. Must 
+#'   be `NULL` if `contain_null = FALSE`.
 #' @param type (optional) Estimation method: `"disc"` for discrete mutual information
 #'   or `"cont"` for continuous mutual information (KSG estimator).
 #' @param nboots (optional) Number of permutations used in the sign-flipping permutation
