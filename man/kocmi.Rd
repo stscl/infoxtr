@@ -59,9 +59,9 @@ Defaults to \code{exp(1)} (nats). Use \code{2} for bits or \code{10} for dits.}
 \code{"sd"}, \code{"equal"}, \code{"geometric"}, \code{"quantile"},
 \verb{"natural("jenks")"}, or \code{"headtail"("headtails")}.}
 
-\item{contain_null}{(optional) Logical. If \code{TRUE}, the test statistic is
-computed as $I(Y; X_{null} | Z) - I(Y; X_{knockoff} | Z)$.
-If \code{FALSE}, it is computed as $I(Y; X | Z) - I(Y; X_{knockoff} | Z)$.}
+\item{contain_null}{(optional) Logical. If \code{TRUE}, the test statistic is computed as
+\eqn{I(Y; X_{null} | Z) - I(Y; X_{knockoff} | Z)}. If \code{FALSE}, it is computed as
+\eqn{I(Y; X | Z) - I(Y; X_{knockoff} | Z)}.}
 }
 \value{
 A named numeric vector.
