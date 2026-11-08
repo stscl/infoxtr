@@ -4,10 +4,8 @@
 #'
 #' @inheritParams surd
 #' @param conds Integer vector of column indices for the conditioning variables.
-#' @param knockoff Knockoff realizations constructed for the `agent` variable
-#'   while keeping the `target` variable unchanged. Each column corresponds to
-#'   one Monte Carlo knockoff sample generated using the remaining variables
-#'   except the target.
+#' @param knockoff Knockoff realizations for the `agent` variable. Each column is 
+#' a Monte Carlo realization generated using the `agent` and `conds` variables.
 #' @param null_knockoff (optional) Knockoff realizations generated under the
 #'   null setting where all variables are jointly used to construct knockoffs.
 #'   Each column represents one Monte Carlo sample. If `contain_null = FALSE`,
