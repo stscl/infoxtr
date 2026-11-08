@@ -18,9 +18,9 @@
 #'   the continuous conditional mutual information estimator. For `type = "disc"`, the 
 #'   number of bins used for discretization.
 #' @param seed (optional) Random seed used for permutation test.
-#' @param contain_null (optional) Logical. If `TRUE`, the test statistic is
-#'   computed as $I(Y; X_{null} | Z) - I(Y; X_{knockoff} | Z)$.
-#'   If `FALSE`, it is computed as $I(Y; X | Z) - I(Y; X_{knockoff} | Z)$.
+#' @param contain_null (optional) Logical. If `TRUE`, the test statistic is computed as 
+#' \eqn{I(Y; X_{null} | Z) - I(Y; X_{knockoff} | Z)}. If `FALSE`, it is computed as 
+#' \eqn{I(Y; X | Z) - I(Y; X_{knockoff} | Z)}.
 #'
 #' @returns A named numeric vector.
 #' @export
