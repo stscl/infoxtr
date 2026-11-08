@@ -12,7 +12,7 @@ kocmi(
   knockoff,
   null_knockoff = NULL,
   type = c("cont", "disc"),
-  nboots = 10000,
+  nboots = 100,
   k = 3,
   threads = 1,
   seed = 42,

@@ -35,7 +35,7 @@
 #' infoxtr::kocmi(mat, 1, 2, 3, kn1, kn2)
 #' 
 kocmi = \(data, target, agent, conds, knockoff, null_knockoff = NULL,
-          type = c("cont", "disc"), nboots = 1e4, k = 3, threads = 1,
+          type = c("cont", "disc"), nboots = 1e2, k = 3, threads = 1,
           seed = 42, base = exp(1), method = "equal", contain_null = TRUE) {
   type = match.arg(type)
   mat = .convert2mat(data, contain_type = FALSE)
